@@ -1,5 +1,5 @@
 databaseChangeLog() {
-    changeSet(author: 'jkburges', id: '1424644927') {
+    changeSet(author: 'jkburges', id: '1424644927-01') {
 
         // Example migration to subset the full production data.
         // delete(tableName: 'measurements') {
