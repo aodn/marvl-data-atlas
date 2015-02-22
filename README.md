@@ -15,30 +15,21 @@ For development, we use:
 
 ## Database migrations
 
-A changelog should be created for each schema for which we want to run migrations.  It *must* be named as such:
+Supposing a changelog file exists, the migrations can be run as follows:
 
 ```
-src/changelog/<schema_name>_changelog.groovy
+$ ./gradlew update -PchangeLogFile=<changelog.groovy> -PjdbcUrl="<url>" -PschemaName=<schema name> -PdbUsername=<username> -PdbPassword=<password>
 ```
 
-e.g. 
-
+e.g.:
 ```
-src/changelog/aodn_dsto_changelog.groovy
+$ ./gradlew update -PchangeLogFile=src/changelog/aodn_dsto_changelog.groovy -PjdbcUrl="jdbc:postgresql://localhost:5432/harvest?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" -PschemaName=aodn_dsto -PdbUsername=aodn_dsto -PdbPassword=aodn_dsto
 ```
-
-To apply all migrations:
-
-```
-$ ./gradlew update
-```
-
-
 
 ## Workflow
 
 A similar workflow as for geoserver content development is used, i.e.
 
-1. develop changes locally (against a subset of production)
-2. check in to git, create PR etc.
+1. develop changes locally (against a subset of production data)
+2. check in to git on a branch, create PR etc.
 3. `master` branch is continuously deployed to a staging environment, against a full copy of production  

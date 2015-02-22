@@ -1,8 +1,6 @@
 apply plugin: 'liquibase'
-apply from: 'db_credentials.gradle'
 
 buildscript {
-
     repositories {
 	mavenLocal()
         mavenCentral()
@@ -15,26 +13,13 @@ buildscript {
 }
 
 liquibase {
-
     activities {
-
-        // Add schemas for which we want to run migrations to this list...
-        def changelogFileEnding = '_changelog.groovy'
-        def changelogRegex = ".*${changelogFileEnding}"
-        def changelogDir = new File('src/changelog')
-
-        changelogDir.eachFileMatch groovy.io.FileType.FILES, ~changelogRegex, { file ->
-
-            def schemaName = file.name.minus('_changelog.groovy')
-            def schemaConfig = schemaConfig(schemaName)
-
-            "$schemaName" {
-                changeLogFile "src/changelog/${schemaName}_changelog.groovy"
-                url 'jdbc:postgresql://localhost:5432/harvest?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory'
-                defaultSchemaName schemaConfig.defaultSchemaName
-                username schemaConfig.username
-                password schemaConfig.password
-            }
+        migration {
+            changeLogFile changeLogFile
+            url jdbcUrl
+            defaultSchemaName schemaName
+            username dbUsername
+            password dbPassword
         }
     }
 }
