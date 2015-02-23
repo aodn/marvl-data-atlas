@@ -18,12 +18,12 @@ For development, we use:
 Supposing a changelog file exists, the migrations can be run as follows:
 
 ```
-$ ./gradlew update -PchangeLogFile=<changelog.groovy> -PjdbcUrl="<url>" -PschemaName=<schema name> -PdbUsername=<username> -PdbPassword=<password>
+$ ./gradlew update -PchangeLogFile=<changelog.groovy> -PjdbcUrl="<url>" -PdefaultSchemaName=<schema name> -PdbUsername=<username> -PdbPassword=<password>
 ```
 
 e.g.:
 ```
-$ ./gradlew update -PchangeLogFile=src/changelog/aodn_dsto_changelog.groovy -PjdbcUrl="jdbc:postgresql://localhost:5432/harvest?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" -PschemaName=aodn_dsto -PdbUsername=aodn_dsto -PdbPassword=aodn_dsto
+$ ./gradlew update -PchangeLogFile=src/changelog/changelog.groovy -PjdbcUrl="jdbc:postgresql://localhost:5432/harvest?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" -PdefaultSchemaName=public -PdbUsername=marvl_data_atlas -PdbPassword=marvl_data_atlas
 ```
 
 ## Workflow

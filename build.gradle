@@ -17,7 +17,7 @@ liquibase {
         migration {
             changeLogFile changeLogFile
             url jdbcUrl
-            defaultSchemaName schemaName
+            defaultSchemaName defaultSchemaName
             username dbUsername
             password dbPassword
         }
