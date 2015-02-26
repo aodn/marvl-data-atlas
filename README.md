@@ -14,13 +14,23 @@ For development, we use:
 
 The steps to initialise are:
 
-1. Set up chef environment as described here: [https://github.com/aodn/chef/blob/master/README.md](https://github.com/aodn/chef/blob/master/README.md)
+* Set up chef environment as described here: [https://github.com/aodn/chef/blob/master/README.md](https://github.com/aodn/chef/blob/master/README.md)
 
-2. Execute the following commands in the `chef` directory:
+* Get `restore.json` key from the dev team and place it under `data_bags/users/restore.json`:
+
+```
+mkdir data_bags/users
+mv ~/restore.json data_bags/users/restore.json
+```
+
+* Execute the following commands in the `chef` directory:
 
 ```
 # We use the "project officer" (po) node.
 NODE_NAME=po
+
+# Use 10.11.12.13 as a static IP for the VM
+export VAGRANT_STATIC_IP=10.11.12.13
 
 # "up" the VM
 vagrant up $NODE_NAME
