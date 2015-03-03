@@ -26,22 +26,65 @@ mv ~/restore.json data_bags/users/restore.json
 * Execute the following commands in the `chef` directory:
 
 ```
-# We use the "project officer" (po) node.
-NODE_NAME=po
+# Reload + provision po node:
+private/bin/po-box.sh
 
-# Use 10.11.12.13 as a static IP for the VM
-export VAGRANT_STATIC_IP=10.11.12.13
+# Restore database from backups:
+vagrant ssh po -- sudo /var/backups/restore/restore.sh
 
-# "up" the VM
-vagrant up $NODE_NAME
-
-# Restore database from backups.
-vagrant ssh $NODE_NAME -- sudo /var/backups/restore/restore.sh
-
-# Run the liquibase migrations.
-vagrant ssh $NODE_NAME -- sudo /var/lib/database_migrations/bin/run_marvl_data_atlas_migration.sh
+# Run the liquibase migrations.:
+vagrant ssh po -- sudo /var/lib/database_migrations/bin/run_marvl_data_atlas_migration.sh
 ```
 
+### Changing backups for restore
+
+In order to change backups for restore, edit `nodes/po.json`:
+```
+$ vim nodes/po.json
+```
+
+Modify the `imos_backup/restore` section to your liking:
+```
+    "imos_backup": {
+        "restore": {
+            "allow": true,
+            "ssh_opts": "-o StrictHostKeyChecking=no",
+            "directives": [
+                {
+                    "from_host":  "2-nsp-mel.emii.org.au",
+                    "from_model": "pgsql",
+                    "files":      [
+                        "harvest/MY_AWESOME_BACKUP1.dump",
+                        "harvest/MY_AWESOME_BACKUP2.dump",
+                        "harvest/MY_AWESOME_BACKUP3.dump",
+                        "harvest/MY_AWESOME_BACKUP4.dump",
+                        "harvest/MY_AWESOME_BACKUP5.dump"
+                    ]
+                }
+            ]
+        }
+    },
+```
+
+Run the following:
+```
+# Reload + provision box:
+private/bin/po-box.sh
+
+# Rerun restoration:
+vagrant ssh po -- sudo /var/backups/restore/restore.sh
+```
+
+### Connecting to database
+
+Use the following credentials:
+```
+host: po.aodn.org.au (10.11.12.13)
+port: 5432
+user: admin
+pass: admin
+database: harvest
+```
 
 ## Workflow
 
@@ -62,5 +105,5 @@ config.vm.synced_folder  File.join(ENV['HOME'], 'marvl-data-atlas'), "/var/lib/d
 To have this configuration change take effect, run:
 
 ```
-$ vagrant reload $NODE_NAME --provision
+$ private/bin/po-box.sh
 ```
