@@ -21,5 +21,6 @@ CREATE TABLE spatial_subset (
 	"VCUR" double precision,
 	"VCUR_QC" text,
 	geom geometry(Geometry,4326),
-	duplicate boolean
+	duplicate boolean,
+	pkid bigserial
 );
