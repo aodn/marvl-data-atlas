@@ -2,7 +2,7 @@
 
 -- SOOP_XBT_DM
 INSERT INTO spatial_subset(
-	WITH m AS (SELECT profile_id, source_id FROM soop_xbt_dm.soop_xbt_dm_profile_map, poly_500m,source WHERE ST_CONTAINS(poly_500m.geom, soop_xbt_dm_profile_map.geom) AND source_id = 18)
+	WITH m AS (SELECT profile_id, source_id FROM soop_xbt_dm.soop_xbt_dm_profile_map, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_xbt_dm_profile_map.geom) AND source_id = 18)
   SELECT source_id,
 	m.profile_id,
 	"LONGITUDE",
