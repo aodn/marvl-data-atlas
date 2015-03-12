@@ -13,8 +13,8 @@ INSERT INTO spatial_subset(
 	"TIME_quality_control",
 	"DEPTH",
 	"DEPTH_quality_control",
-	"TEMP" AS "TEMP",
-	"TEMP_quality_control" AS "TEMP_QC",
+	"TEMP",
+	"TEMP_quality_control",
 	NULL,
 	NULL,
 	NULL,
@@ -50,6 +50,33 @@ INSERT INTO spatial_subset(
 	m.geom,
 	NULL
   FROM aodn_csiro_cmar.aodn_csiro_cmar_xbt_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
-  	source_id = 34 -- Link to institutions table
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
+  	source_id = 34
+	);
+
+-- WODB XBT
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, xbt_deployments.geom FROM wodb.xbt_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, xbt_deployments.geom) AND source_id = 45)
+  SELECT source_id,
+	m."CAST_ID",
+	"LONGITUDE",
+	NULL,
+	"LATITUDE",
+	NULL,
+	"TIME",
+	NULL,
+	depth,
+	NULL,
+	temperature,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	geom,
+	NULL
+  FROM m
+  LEFT JOIN wodb.xbt_measurements d ON m."CAST_ID" = d.cast_id
 	);
