@@ -24,3 +24,6 @@ CREATE TABLE spatial_subset (
 	duplicate boolean,
 	pkid bigserial
 );
+
+ALTER TABLE spatial_subset 
+ADD CONSTRAINT spatiaL_subset_pkid PRIMARY KEY (pkid);
