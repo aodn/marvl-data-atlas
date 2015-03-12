@@ -24,7 +24,7 @@ INSERT INTO spatial_subset(
 	geom,
 	NULL
   FROM m
-  JOIN soop_xbt_dm.soop_xbt_dm_profile_data d ON m.profile_id = d.profile_id
+  LEFT JOIN soop_xbt_dm.soop_xbt_dm_profile_data d ON m.profile_id = d.profile_id
 	);
 
 -- CSIRO XBT
@@ -49,7 +49,7 @@ INSERT INTO spatial_subset(
 	NULL,
 	m.geom,
 	NULL
-  FROM aodn_csiro_cmar.aodn_csiro_cmar_xbt_data m, poly_500m, source
-  WHERE ST_CONTAINS(poly_500m.geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
+  FROM aodn_csiro_cmar.aodn_csiro_cmar_xbt_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
   	source_id = 34 -- Link to institutions table
 	);
