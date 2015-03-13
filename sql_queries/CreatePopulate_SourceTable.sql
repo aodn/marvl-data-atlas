@@ -12,7 +12,7 @@ CREATE TABLE source (
 	ref_column text
 );
 
-INSERT INTO source (SELECT 'IMOS/AODN', 'AATAMS', 'SATTAG', 'DM', 'profile', 'aatams_sattag_dm', 'aatams_sattag_dm_profile_data','profile_id');
+INSERT INTO source (SELECT 'IMOS/AODN', 'AATAMS', 'SATTAG', 'DM', 'trajectoryProfile', 'aatams_sattag_dm', 'aatams_sattag_dm_profile_data','profile_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ACORN', '', '', 'gridded','','','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANFOG', '', 'DM', 'trajectoryProfile','anfog_dm','anfog_dm_trajectory_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'CTD', 'NRS', 'profile','anmn_nrs_ctd_profiles','anmn_nrs_ctd_profiles_data','cruise_id');
@@ -24,12 +24,12 @@ INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'DarYon', 'NRS', 'timeSeriesProf
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', '', 'Temperature regridded', 'timeSeriesProfile','anmn_t_regridded','anmn_regridded_temperature_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', '', 'TS', 'timeSeriesProfile','anmn_ts','anmn_ts_timeseries_data','timeseries_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', '', 'Velocity', 'timeSeriesProfile','anmn_velocity','','');
-INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'DSTO', 'profile','aodn_dsto','aodn_dsto_trajectory_data','file_id');
-INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'NT hawksbills', 'profile','aodn_nt_sattag_hawksbill','aodn_nt_sattag_hawksbill_profile_data','profile_id');
-INSERT INTO source (SELECT 'IMOS/AODN', 'Argo', '', '', 'profile','argo','profile_download','platform_number');
+INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'DSTO', 'trajectoryProfile','aodn_dsto','aodn_dsto_trajectory_data','file_id');
+INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'NT hawksbills', 'trajectoryProfile','aodn_nt_sattag_hawksbill','aodn_nt_sattag_hawksbill_profile_data','profile_id');
+INSERT INTO source (SELECT 'IMOS/AODN', 'Argo', '', '', 'trajectoryProfile','argo','profile_download','platform_number');
 INSERT INTO source (SELECT 'IMOS/AODN', 'AUV', '', '', 'trajectoryProfile','auv','auv_trajectory_b_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'FAIMMS', '', '', 'timeSeriesProfile','faimms','faimms_timeseries_data','channel_id');
-INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'XBT', 'DM', 'profile','soop_xbt_dm','soop_xbt_dm_profile_data','profile_id');
+INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'XBT', 'DM', 'trajectoryProfile','soop_xbt_dm','soop_xbt_dm_profile_data','profile_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'CO2', '', 'trajectoryProfile','soop_co2','soop_co2_trajectory_data','cruise_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'TRV', '', 'trajectoryProfile','soop_trv','soop_trv_trajectory_data','trip_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'SST', 'DM', 'trajectoryProfile','soop_sst','soop_sst_dm_trajectory_data','trajectory_id');
@@ -39,24 +39,24 @@ INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'TMV', 'DM', 'trajectoryProfile'
 INSERT INTO source (SELECT 'IMOS/AODN', 'SRS', 'Altimetry', '', 'timeSeriesProfile','srs_altimetry','srs_altimetry_timeseries_data','site_name');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SRS', 'Salinity', '', 'gridded','','','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SRS', 'SST', '', 'gridded','','','');
-INSERT INTO source (SELECT 'CSIRO', '', 'ADCP', '', 'profile','aodn_csiro_cmar','aodn_csiro_cmar_adcp_data','"SURVEY_ID"');
-INSERT INTO source (SELECT 'CSIRO', '', 'CTD', '', 'profile','aodn_csiro_cmar','aodn_csiro_cmar_ctd_data','"SURVEY_ID"');
-INSERT INTO source (SELECT 'CSIRO', '', 'Hydrology', '', 'profile','aodn_csiro_cmar','aodn_csiro_cmar_hydrology_data','"SURVEY_ID"');
+INSERT INTO source (SELECT 'CSIRO', '', 'ADCP', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_adcp_data','"SURVEY_ID"');
+INSERT INTO source (SELECT 'CSIRO', '', 'CTD', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_ctd_data','"SURVEY_ID"');
+INSERT INTO source (SELECT 'CSIRO', '', 'Hydrology', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_hydrology_data','"SURVEY_ID"');
 INSERT INTO source (SELECT 'CSIRO', '', 'Mooring', '', 'timeSeriesProfile','aodn_csiro_cmar','aodn_csiro_cmar_mooring_data','"SURVEY_ID"');
 INSERT INTO source (SELECT 'CSIRO', '', 'Trajectory', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_trajectory_data','"SURVEY_ID"');
 INSERT INTO source (SELECT 'CSIRO', '', 'Underway', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_underway_data','"SURVEY_ID"');
-INSERT INTO source (SELECT 'CSIRO', '', 'XBT', '', 'profile','aodn_csiro_cmar','aodn_csiro_cmar_xbt_data','"SURVEY_ID"');
-INSERT INTO source (SELECT 'RAN', '', 'CTD', '', 'profile','aodn_ran_ctd','aodn_ran_ctd_data','file_id');
+INSERT INTO source (SELECT 'CSIRO', '', 'XBT', '', 'trajectoryProfile','aodn_csiro_cmar','aodn_csiro_cmar_xbt_data','"SURVEY_ID"');
+INSERT INTO source (SELECT 'RAN', '', 'CTD', '', 'trajectoryProfile','aodn_ran_ctd','aodn_ran_ctd_data','file_id');
 INSERT INTO source (SELECT 'RAN', '', 'SST', '', 'timeSeriesProfile','aodn_ran_sst','ran_sst_data','file_id');
 INSERT INTO source (SELECT 'WODB', '', 'APB', '', 'profile','wodb','','');
-INSERT INTO source (SELECT 'WODB', '', 'CTD', '', 'profile','wodb','','');
+INSERT INTO source (SELECT 'WODB', '', 'CTD', '', 'trajectoryProfile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'GLD', '', 'trajectoryProfile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'MBT', '', 'profile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'OSD', '', 'profile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'PFL', '', 'profile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'SUR', '', 'trajectoryProfile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'UOR', '', 'profile','wodb','','');
-INSERT INTO source (SELECT 'WODB', '', 'XBT', '', 'profile','wodb','','');
+INSERT INTO source (SELECT 'WODB', '', 'XBT', '', 'trajectoryProfile','wodb','','');
 
 ALTER TABLE source ADD COLUMN source_id bigserial;
 ALTER TABLE source ADD PRIMARY KEY (source_id);
