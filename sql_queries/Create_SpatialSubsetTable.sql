@@ -22,8 +22,11 @@ CREATE TABLE spatial_subset (
 	"VCUR_QC" text,
 	geom geometry(Geometry,4326),
 	duplicate boolean,
+	duplicate_id integer,
 	pkid bigserial
 );
 
 ALTER TABLE spatial_subset 
-ADD CONSTRAINT spatiaL_subset_pkid PRIMARY KEY (pkid);
+ADD CONSTRAINT spatial_subset_pkid PRIMARY KEY (pkid);
+
+CREATE SEQUENCE duplicate_seq START 1;
