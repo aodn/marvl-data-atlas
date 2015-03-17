@@ -23,6 +23,7 @@ INSERT INTO spatial_subset(
 	NULL,
 	geom
   FROM m
+  WHERE "TIME" >= '1995-01-01'
   LEFT JOIN soop_xbt_dm.soop_xbt_dm_profile_data d ON m.profile_id = d.profile_id
 	);
 
