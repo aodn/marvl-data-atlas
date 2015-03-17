@@ -250,3 +250,59 @@ INSERT INTO spatial_subset(
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
   	source_id = 33 -- Link to institutions table
 	);
+	
+		
+	-- WODB GLD
+INSERT INTO spatial_subset(
+        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, gld_deployments.geom FROM wodb.gld_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, gld_deployments.geom) AND source_id = 39)
+  SELECT source_id,
+        m."CAST_ID",
+        "LONGITUDE",
+        NULL,
+        "LATITUDE",
+        NULL,
+        "TIME",
+        NULL,
+        depth,
+        NULL,
+        temperature,
+        NULL,
+        salinity,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        geom,
+        NULL
+  FROM m
+  LEFT JOIN wodb.gld_measurements d ON m."CAST_ID" = d.cast_id
+        );
+        
+        
+        	-- WODB SUR
+INSERT INTO spatial_subset(
+        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, sur_deployments.geom FROM wodb.sur_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, sur_deployments.geom) AND source_id = 43)
+  SELECT source_id,
+        m."CAST_ID",
+        "LONGITUDE",
+        NULL,
+        "LATITUDE",
+        NULL,
+        "TIME",
+        NULL,
+        depth,
+        NULL,
+        temperature,
+        NULL,
+        salinity,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        geom,
+        NULL
+  FROM m
+  LEFT JOIN wodb.sur_measurements d ON m."CAST_ID" = d.cast_id
+        );
