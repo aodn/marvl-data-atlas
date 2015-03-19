@@ -183,3 +183,29 @@ INSERT INTO spatial_subset(
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
   	source_id = 14
 	);
+
+-- ANMN NRS CTD PROFILES
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	cruise_id,
+	"LONGITUDE",
+	"LONGITUDE_quality_control",
+	"LATITUDE",
+	"LATITUDE_quality_control",
+	"TIME" AT TIME ZONE 'UTC',
+	"TIME_quality_control",
+	"DEPTH",
+	"DEPTH_quality_control",
+	"TEMP",
+	"TEMP_quality_control",
+	"PSAL",
+	"PSAL_quality_control",
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM anmn_nrs_ctd_profiles.anmn_nrs_ctd_profiles_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
+  	source_id = 4
+	);
