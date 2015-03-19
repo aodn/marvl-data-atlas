@@ -132,7 +132,6 @@ INSERT INTO spatial_subset(
   LEFT JOIN wodb.apb_measurements d ON m."CAST_ID" = d.cast_id
 	);
 
-	
 -- AODN RAN CTD
 INSERT INTO spatial_subset(
   SELECT source_id,
@@ -157,4 +156,30 @@ INSERT INTO spatial_subset(
   FROM aodn_ran_ctd.aodn_ran_ctd_data m, "500m_isobath", source
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
   	source_id = 35
+	);
+
+-- AODN NT SATTAG HAWKSBILL
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	profile_id,
+	lon,
+	NULL,
+	lat,
+	NULL,
+	timestamp AT TIME ZONE 'UTC',
+	NULL,
+	pressure,
+	NULL,
+	temp_vals,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM aodn_nt_sattag_hawksbill.aodn_nt_sattag_hawksbill_profile_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
+  	source_id = 14
 	);
