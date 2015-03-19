@@ -209,3 +209,29 @@ INSERT INTO spatial_subset(
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
   	source_id = 4
 	);
+
+-- Argo
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT DISTINCT platform_number, cycle_number, source_id FROM argo.profile_download, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, profile_download."position") AND source_id = 15  AND juld >= '1995-01-01')
+  SELECT source_id,
+	m.platform_number,
+	longitude,
+	position_qc,
+	latitude,
+	position_qc,
+	juld,
+	juld_qc,
+	pres_adjusted,
+	pres_adjusted_qc,
+	temp_adjusted,
+	temp_adjusted_qc,
+	psal_adjusted,
+	psal_adjusted_qc,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	"position"
+  FROM m
+  LEFT JOIN argo.profile_download d ON m.platform_number = d.platform_number AND m.cycle_number = d.cycle_number
+	);
