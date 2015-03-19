@@ -131,3 +131,30 @@ INSERT INTO spatial_subset(
   FROM m
   LEFT JOIN wodb.apb_measurements d ON m."CAST_ID" = d.cast_id
 	);
+
+	
+-- AODN RAN CTD
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	file_id,
+	longitude,
+	position_qc_flag,
+	latitude,
+	position_qc_flag,
+	"time" AT TIME ZONE 'UTC',
+	time_qc_flag,
+	pressure,
+	NULL,
+	temperature,
+	temperature_qc_flag,
+	salinity,
+	salinity_qc_flag,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM aodn_ran_ctd.aodn_ran_ctd_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
+  	source_id = 35
+	);
