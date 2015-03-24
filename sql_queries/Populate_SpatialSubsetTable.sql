@@ -287,3 +287,30 @@ INSERT INTO spatial_subset(
   FROM m
   LEFT JOIN wodb.ctd_measurements d ON m."CAST_ID" = d.cast_id
 	);
+
+
+-- WODB PFL
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, pfl_deployments.geom FROM wodb.pfl_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, pfl_deployments.geom) AND source_id = 42)
+  SELECT source_id,
+	m."CAST_ID",
+	"LONGITUDE",
+	NULL,
+	"LATITUDE",
+	NULL,
+	"TIME",
+	NULL,
+	depth,
+	NULL,
+	temperature,
+	NULL,
+	salinity,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	geom
+  FROM m
+  LEFT JOIN wodb.pfl_measurements d ON m."CAST_ID" = d.cast_id
+	);
