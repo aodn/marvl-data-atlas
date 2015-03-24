@@ -23,8 +23,8 @@ INSERT INTO spatial_subset(
 	NULL,
 	geom
   FROM m
-  WHERE "TIME" >= '1995-01-01'
   LEFT JOIN soop_xbt_dm.soop_xbt_dm_profile_data d ON m.profile_id = d.profile_id
+    WHERE "TIME" >= '1995-01-01'
 	);
 
 -- CSIRO XBT
@@ -234,4 +234,56 @@ INSERT INTO spatial_subset(
 	"position"
   FROM m
   LEFT JOIN argo.profile_download d ON m.platform_number = d.platform_number AND m.cycle_number = d.cycle_number
+	);
+
+-- CSIRO CTD
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	"SURVEY_ID",
+	"LON_START",
+	NULL,
+	"LAT_START",
+	NULL,
+	"TIME_START" AT TIME ZONE 'UTC',
+	NULL,
+	"PRESSURE",
+	NULL,
+	"TEMPERATURE",
+	"TEMPERATURE_QC",
+	"SALINITY",
+	"SALINITY_QC",
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM aodn_csiro_cmar.aodn_csiro_cmar_ctd_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
+  	source_id = 29
+	);
+
+-- WODB CTD
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, ctd_deployments.geom FROM wodb.ctd_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, ctd_deployments.geom) AND source_id = 38)
+  SELECT source_id,
+	m."CAST_ID",
+	"LONGITUDE",
+	NULL,
+	"LATITUDE",
+	NULL,
+	"TIME",
+	NULL,
+	depth,
+	NULL,
+	temperature,
+	NULL,
+	salinity,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	geom
+  FROM m
+  LEFT JOIN wodb.ctd_measurements d ON m."CAST_ID" = d.cast_id
 	);
