@@ -30,7 +30,7 @@ WITH m AS (SELECT file_id, source_id FROM auv.auv_trajectory_map, "500m_isobath"
 ---SOOP-CO2	
 
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT file_id, source_id FROM soop_co2.soop_co2_trajectory_map, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_co2.soop_co2_trajectory_map.geom) AND source_id = 19)
+WITH m AS (SELECT cruise_id, source_id FROM soop_co2.soop_co2_trajectory_map, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_co2.soop_co2_trajectory_map.geom) AND source_id = 19)
   SELECT source_id,
   m.file_id,
   	"LONGITUDE",
@@ -52,7 +52,7 @@ WITH m AS (SELECT file_id, source_id FROM soop_co2.soop_co2_trajectory_map, "500
 	geom, 
 	NULL
 	FROM m
-  JOIN soop_co2.soop_co2_trajectory_data d ON m.file_id = d.file_id
+  JOIN soop_co2.soop_co2_trajectory_data d ON m.cruise_id = d.cruise_id
 	);
 	
 ---SOOP-TRV
