@@ -3,7 +3,7 @@ SET SEARCH_PATH = marvl3, public;
 	
 ----AUV
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT file_id, source_id FROM auv.auv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, auv.auv_trajectory_data.geom) AND source_id = 16)
+WITH m AS (SELECT DISTINCT file_id, source_id FROM auv.auv_trajectory_st_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, auv.auv_trajectory_st_data.geom) AND source_id = 16)
   SELECT source_id,
   m.file_id,
   	"LONGITUDE",
@@ -31,7 +31,7 @@ WITH m AS (SELECT file_id, source_id FROM auv.auv_trajectory_data, "500m_isobath
 ---SOOP-CO2	
 
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT cruise_id, source_id FROM soop_co2.soop_co2_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_co2.soop_co2_trajectory_data.geom) AND source_id = 19)
+WITH m AS (SELECT DISTINCT cruise_id, source_id FROM soop_co2.soop_co2_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_co2.soop_co2_trajectory_data.geom) AND source_id = 19)
   SELECT source_id,
   m.cruise_id,
   	"LONGITUDE",
@@ -59,7 +59,7 @@ WITH m AS (SELECT cruise_id, source_id FROM soop_co2.soop_co2_trajectory_data, "
 	
 ---SOOP-TRV
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT trip_id, source_id FROM soop_trv.soop_trv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_trv.soop_trv_trajectory_data.geom) AND source_id = 20)
+WITH m AS (SELECT DISTINCT trip_id, source_id FROM soop_trv.soop_trv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_trv.soop_trv_trajectory_data.geom) AND source_id = 20)
   SELECT source_id,
   m.trip_id,
   	"LONGITUDE",
@@ -88,7 +88,7 @@ WITH m AS (SELECT trip_id, source_id FROM soop_trv.soop_trv_trajectory_data, "50
 ---SOOP-SST DM	
 SET SEARCH_PATH = marvl3, public;	
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT trajectory_id, source_id FROM soop_sst.soop_sst_dm_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_dm_trajectory_data.geom) AND source_id = 21)
+WITH m AS (SELECT DISTINCT trajectory_id, source_id FROM soop_sst.soop_sst_dm_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_dm_trajectory_data.geom) AND source_id = 21)
   SELECT source_id,
   m.trajectory_id,
   	"LONGITUDE",
@@ -117,7 +117,7 @@ WITH m AS (SELECT trajectory_id, source_id FROM soop_sst.soop_sst_dm_trajectory_
 ---SOOP-SST NRT
 
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT trajectory_id, source_id FROM soop_sst.soop_sst_nrt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_nrt_trajectory_data.geom) AND source_id = 22)
+WITH m AS (SELECT DISTINCT trajectory_id, source_id FROM soop_sst.soop_sst_nrt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_nrt_trajectory_data.geom) AND source_id = 22)
   SELECT source_id,
   m.trajectory_id,
   	"LONGITUDE",
@@ -146,7 +146,7 @@ WITH m AS (SELECT trajectory_id, source_id FROM soop_sst.soop_sst_nrt_trajectory
 ---SOOP_TMV
 	
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT file_id, source_id FROM soop_tmv.soop_tmv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_tmv.soop_tmv_trajectory_data.geom) AND source_id = 24)
+WITH m AS (SELECT DISTINCT file_id, source_id FROM soop_tmv.soop_tmv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_tmv.soop_tmv_trajectory_data.geom) AND source_id = 24)
   SELECT source_id,
   m.file_id,
   	"LONGITUDE",
@@ -175,7 +175,7 @@ WITH m AS (SELECT file_id, source_id FROM soop_tmv.soop_tmv_trajectory_data, "50
 ---SOOP_ASF_MT	
 	
 INSERT INTO spatial_subset(	
-WITH m AS (SELECT cruise_id, source_id FROM soop_asf_mt.soop_asf_mt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_asf_mt.soop_asf_mt_trajectory_data.geom) AND source_id = 23)
+WITH m AS (SELECT DISTINCT cruise_id, source_id FROM soop_asf_mt.soop_asf_mt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_asf_mt.soop_asf_mt_trajectory_data.geom) AND source_id = 23)
   SELECT source_id,
   m.cruise_id,
   	"LONGITUDE",
@@ -316,4 +316,32 @@ INSERT INTO spatial_subset(
         NULL
   FROM m
   LEFT JOIN wodb.sur_measurements d ON m."CAST_ID" = d.cast_id
+        );
+        
+           	-- WODB UOR
+INSERT INTO spatial_subset(
+        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, uor_deployments.geom FROM wodb.uor_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, uor_deployments.geom) AND source_id = 44)
+  SELECT source_id,
+        m."CAST_ID",
+        "LONGITUDE",
+        NULL,
+        "LATITUDE",
+        NULL,
+        "TIME",
+        NULL,
+        depth,
+        NULL,
+        temperature,
+        NULL,
+        salinity,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        NULL,
+        m.geom,
+        NULL,
+        NULL
+  FROM m
+  LEFT JOIN wodb.uor_measurements d ON m."CAST_ID" = d.cast_id
         );
