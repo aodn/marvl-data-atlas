@@ -26,7 +26,8 @@ INSERT INTO spatial_subset(
 	NULL,
 	m.geom
   FROM aatams_sattag_dm.aatams_sattag_dm_profile_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 1 AND timestamp >= '1995-01-01' AND timestamp < '2015-01-01'
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 1 AND timestamp >= '1995-01-01' AND timestamp < '2015-01-01' AND 
+	device_id NOT IN ('ct106-796-13','ct31-441-07','ct31-448B-07','ct61-01-09','ct76-364-11','ft13-073_3-13','ft13-616-12','ft13-628-12','ft13-633-12')
 	);
 	
 -- ANMN NRS CTD PROFILES
