@@ -75,6 +75,13 @@ private/bin/po-box.sh
 vagrant ssh po -- sudo /var/backups/restore/restore.sh
 ```
 
+### Updating the box
+
+In order to apply the latest changes to the box, run the following:
+```
+$ git pull && (cd private && git pull) && private/bin/po-box.sh
+```
+
 ### Connecting to database
 
 Use the following credentials:
