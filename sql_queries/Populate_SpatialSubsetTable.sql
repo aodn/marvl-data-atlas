@@ -27,7 +27,7 @@ INSERT INTO spatial_subset(
 	m.geom
   FROM aatams_sattag_dm.aatams_sattag_dm_profile_data m, "500m_isobath", source
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 1 AND timestamp >= '1995-01-01' AND timestamp < '2015-01-01' AND 
-	device_id NOT IN ('ct106-796-13','ct31-441-07','ct31-448B-07','ct61-01-09','ct76-364-11','ft13-073_3-13','ft13-616-12','ft13-628-12','ft13-633-12')
+	device_id NOT IN ('ct106-796-13','ct31-441-07','ct31-448B-07','ct61-01-09','ct76-364-11','ft13-073_3-13','ft13-616-12','ft13-628-12','ft13-633-12') -- Exclude devices that have been recovered
 	);
 	
 -- ANMN NRS CTD PROFILES
@@ -80,6 +80,33 @@ INSERT INTO spatial_subset(
   WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 14 AND timestamp >= '1995-01-01' AND timestamp < '2015-01-01'
 	);
 
+-- Argo
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT DISTINCT platform_number, cycle_number, source_id FROM argo.profile_download, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, profile_download."position") AND source_id = 15  AND juld >= '1995-01-01')
+  SELECT source_id,
+	m.platform_number,
+	longitude,
+	position_qc,
+	latitude,
+	position_qc,
+	juld,
+	juld_qc,
+	pres_adjusted,
+	pres_adjusted_qc,
+	temp_adjusted,
+	temp_adjusted_qc,
+	psal_adjusted,
+	psal_adjusted_qc,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	"position"
+  FROM m
+  LEFT JOIN argo.profile_download d ON m.platform_number = d.platform_number AND m.cycle_number = d.cycle_number
+  WHERE juld >= '1995-01-01' AND juld < '2015-01-01'
+	);
+
 -- WODB XBT
 INSERT INTO spatial_subset(
 	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, xbt_deployments.geom FROM wodb.xbt_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, xbt_deployments.geom) AND source_id = 45)
@@ -129,40 +156,14 @@ INSERT INTO spatial_subset(
 	NULL,
 	m.geom
   FROM aodn_ran_ctd.aodn_ran_ctd_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
-  	source_id = 35
-	);
-
--- Argo
-INSERT INTO spatial_subset(
-	WITH m AS (SELECT DISTINCT platform_number, cycle_number, source_id FROM argo.profile_download, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, profile_download."position") AND source_id = 15  AND juld >= '1995-01-01')
-  SELECT source_id,
-	m.platform_number,
-	longitude,
-	position_qc,
-	latitude,
-	position_qc,
-	juld,
-	juld_qc,
-	pres_adjusted,
-	pres_adjusted_qc,
-	temp_adjusted,
-	temp_adjusted_qc,
-	psal_adjusted,
-	psal_adjusted_qc,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	"position"
-  FROM m
-  LEFT JOIN argo.profile_download d ON m.platform_number = d.platform_number AND m.cycle_number = d.cycle_number
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 35 AND
+  "time" >= '1995-01-01' AND "time" < '2015-01-01'
 	);
 
 -- CSIRO CTD
 INSERT INTO spatial_subset(
   SELECT source_id,
-	"SURVEY_ID",
+	COALESCE("SURVEY_ID"||'-'||"STATION_NAME"),
 	"LON_START",
 	NULL,
 	"LAT_START",
@@ -181,8 +182,8 @@ INSERT INTO spatial_subset(
 	NULL,
 	m.geom
   FROM aodn_csiro_cmar.aodn_csiro_cmar_ctd_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND
-  	source_id = 29
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 29 AND
+  "TIME_START" >= '1995-01-01' AND "TIME_START" < '2015-01-01'
 	);
 
 -- WODB CTD
