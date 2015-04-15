@@ -82,9 +82,9 @@ INSERT INTO spatial_subset(
 
 -- Argo
 INSERT INTO spatial_subset(
-	WITH m AS (SELECT DISTINCT platform_number, cycle_number, source_id FROM argo.profile_download, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, profile_download."position") AND source_id = 15  AND juld >= '1995-01-01')
+	WITH m AS (SELECT DISTINCT platform_number, cycle_number, source_id FROM argo.profile_download, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, profile_download."position") AND source_id = 15  AND juld >= '1995-01-01' AND juld < '2015-01-01')
   SELECT source_id,
-	m.platform_number,
+	COALESCE(m.platform_number||'_'||m.cycle_number),
 	longitude,
 	position_qc,
 	latitude,
@@ -104,12 +104,11 @@ INSERT INTO spatial_subset(
 	"position"
   FROM m
   LEFT JOIN argo.profile_download d ON m.platform_number = d.platform_number AND m.cycle_number = d.cycle_number
-  WHERE juld >= '1995-01-01' AND juld < '2015-01-01'
 	);
 
 -- WODB XBT
 INSERT INTO spatial_subset(
-	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, xbt_deployments.geom FROM wodb.xbt_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, xbt_deployments.geom) AND source_id = 45)
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, xbt_deployments.geom FROM wodb.xbt_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, xbt_deployments.geom) AND source_id = 45 AND "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01')
   SELECT source_id,
 	m."CAST_ID",
 	"LONGITUDE",
@@ -131,33 +130,6 @@ INSERT INTO spatial_subset(
 	geom
   FROM m
   LEFT JOIN wodb.xbt_measurements d ON m."CAST_ID" = d.cast_id
-	WHERE "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01'
-	);
-
--- AODN RAN CTD
-INSERT INTO spatial_subset(
-  SELECT source_id,
-	file_id,
-	longitude,
-	position_qc_flag,
-	latitude,
-	position_qc_flag,
-	"time" AT TIME ZONE 'UTC',
-	time_qc_flag,
-	pressure,
-	NULL,
-	temperature,
-	temperature_qc_flag,
-	salinity,
-	salinity_qc_flag,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	m.geom
-  FROM aodn_ran_ctd.aodn_ran_ctd_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 35 AND
-  "time" >= '1995-01-01' AND "time" < '2015-01-01'
 	);
 
 -- CSIRO CTD
@@ -186,9 +158,35 @@ INSERT INTO spatial_subset(
   "TIME_START" >= '1995-01-01' AND "TIME_START" < '2015-01-01'
 	);
 
+-- RAN CTD
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	file_id,
+	longitude,
+	position_qc_flag,
+	latitude,
+	position_qc_flag,
+	"time" AT TIME ZONE 'UTC',
+	time_qc_flag,
+	pressure,
+	NULL,
+	temperature,
+	temperature_qc_flag,
+	salinity,
+	salinity_qc_flag,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM aodn_ran_ctd.aodn_ran_ctd_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 35 AND
+  "time" >= '1995-01-01' AND "time" < '2015-01-01'
+	);
+
 -- WODB CTD
 INSERT INTO spatial_subset(
-	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, ctd_deployments.geom FROM wodb.ctd_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, ctd_deployments.geom) AND source_id = 38)
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, ctd_deployments.geom FROM wodb.ctd_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, ctd_deployments.geom) AND source_id = 38 AND "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01')
   SELECT source_id,
 	m."CAST_ID",
 	"LONGITUDE",
@@ -212,10 +210,9 @@ INSERT INTO spatial_subset(
   LEFT JOIN wodb.ctd_measurements d ON m."CAST_ID" = d.cast_id
 	);
 
-
 -- WODB PFL
 INSERT INTO spatial_subset(
-	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, pfl_deployments.geom FROM wodb.pfl_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, pfl_deployments.geom) AND source_id = 42)
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, pfl_deployments.geom FROM wodb.pfl_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, pfl_deployments.geom) AND source_id = 42 AND "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01')
   SELECT source_id,
 	m."CAST_ID",
 	"LONGITUDE",
@@ -237,4 +234,83 @@ INSERT INTO spatial_subset(
 	geom
   FROM m
   LEFT JOIN wodb.pfl_measurements d ON m."CAST_ID" = d.cast_id
+	);
+	
+-- WODB MBT
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, mbt_deployments.geom FROM wodb.mbt_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, mbt_deployments.geom) AND source_id = 40 AND "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01')
+  SELECT source_id,
+	m."CAST_ID",
+	"LONGITUDE",
+	NULL,
+	"LATITUDE",
+	NULL,
+	"TIME",
+	NULL,
+	depth,
+	NULL,
+	temperature,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	geom
+  FROM m
+  LEFT JOIN wodb.mbt_measurements d ON m."CAST_ID" = d.cast_id
+	);
+
+	
+-- WODB OSD
+INSERT INTO spatial_subset(
+	WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, osd_deployments.geom FROM wodb.osd_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, osd_deployments.geom) AND source_id = 41 AND "TIME" >= '1995-01-01' AND "TIME" < '2015-01-01')
+  SELECT source_id,
+	m."CAST_ID",
+	"LONGITUDE",
+	NULL,
+	"LATITUDE",
+	NULL,
+	"TIME",
+	NULL,
+	depth,
+	NULL,
+	temperature,
+	NULL,
+	salinity,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	geom
+  FROM m
+  LEFT JOIN wodb.osd_measurements d ON m."CAST_ID" = d.cast_id
+	);
+
+-- CSIRO Hydrology
+INSERT INTO spatial_subset(
+  SELECT source_id,
+	"DEPLOYMENT_ID",
+	"LON_START",
+	NULL,
+	"LAT_START",
+	NULL,
+	"TIME_START" AT TIME ZONE 'UTC',
+	NULL,
+	"PRESSURE",
+	NULL,
+	"TEMPERATURE",
+	"TEMPERATURE_QC",
+	"SALINITY",
+	"SALINITY_QC",
+	NULL,
+	NULL,
+	NULL,
+	NULL,
+	m.geom
+  FROM aodn_csiro_cmar.aodn_csiro_cmar_hydrology_data m, "500m_isobath", source
+  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND source_id = 30 AND
+  "TIME_START" >= '1995-01-01' AND "TIME_START" < '2015-01-01'
 	);
