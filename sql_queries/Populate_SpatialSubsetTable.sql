@@ -1,5 +1,5 @@
 ﻿SET SEARCH_PATH = marvl3, public;
-
+ 
 -- TRUNCATE spatial_subset CASCADE;
 -- ALTER SEQUENCE spatial_subset_pkid_seq RESTART;
 -- ALTER SEQUENCE duplicate_seq RESTART;
