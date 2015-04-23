@@ -2,346 +2,397 @@
 SET SEARCH_PATH = marvl3, public;
 	
 ----AUV
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT file_id, source_id FROM auv.auv_trajectory_st_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, auv.auv_trajectory_st_data.geom) AND source_id = 16)
-  SELECT source_id,
-  m.file_id,
-  	"LONGITUDE",
-	NULL,
-	"LATITUDE",
-	NULL,
-	"TIME",
-	NULL,
-	"DEPTH",
-	NULL,
-	"TEMP",
-	NULL,
-	"PSAL",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN auv.auv_trajectory_st_data d ON m.file_id = d.file_id
-	);
+\echo 'AUV'
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+)
+SELECT 
+s.source_id,
+d.file_id,
+d."LONGITUDE",
+d."LATITUDE",
+d."TIME",
+d."DEPTH",
+d."TEMP",
+d."PSAL",
+d.geom
+FROM auv.auv_trajectory_st_data d,  "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name= 'auv_trajectory_st_data' 
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'
+	
 ---SOOP-CO2	
-
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT cruise_id, source_id FROM soop_co2.soop_co2_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_co2.soop_co2_trajectory_data.geom) AND source_id = 19)
-  SELECT source_id,
-  m.cruise_id,
-  	"LONGITUDE",
-	"LONGITUDE_quality_control",
-	"LATITUDE",
-	"LATITUDE_quality_control",
-	"TIME",
-	"TIME_quality_control",
-	0,
-	0,
-	"TEMP_1",
-	"TEMP_1_quality_control",
-	"PSAL",
-	"PSAL_quality_control",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_co2.soop_co2_trajectory_data d ON m.cruise_id = d.cruise_id
-	);
+\echo 'SOOP-CO2'
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT 
+s.source_id,
+d.cruise_id,
+d."LONGITUDE",
+d."LONGITUDE_quality_control",
+d."LATITUDE",
+d."LATITUDE_quality_control",
+d."TIME",
+d."TIME_quality_control",
+0,
+d."TEMP_1",
+d."TEMP_1_quality_control",
+d."PSAL",
+d."PSAL_quality_control",
+d.geom
+FROM soop_co2.soop_co2_trajectory_data d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, d.geom) 
+AND s.table_name='soop_co2_trajectory_data' 
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'
+   
 	
 ---SOOP-TRV
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT trip_id, source_id FROM soop_trv.soop_trv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_trv.soop_trv_trajectory_data.geom) AND source_id = 20)
-  SELECT source_id,
-  m.trip_id,
-  	"LONGITUDE",
-	NULL,
-	"LATITUDE",
-	NULL,
-	"TIME",
-	NULL,
-	0,
-	0,
-	"Seawater_Intake_Temperature",
-	NULL,
-	"PSAL",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_trv.soop_trv_trajectory_data d ON m.trip_id = d.trip_id
-	);
+\echo 'SOOP-TRV'
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+) 
+SELECT 
+s.source_id,
+d.trip_id,
+d."LONGITUDE",
+d."LATITUDE",
+d."TIME",
+0,
+d."Seawater_Intake_Temperature",
+d."PSAL",
+d.geom
+FROM soop_trv.soop_trv_trajectory_data d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, soop_trv.soop_trv_trajectory_data.geom) 
+AND s.table_name='soop_trv_trajectory_data' 
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'
+ 
 	
 ---SOOP-SST DM	
-SET SEARCH_PATH = marvl3, public;	
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT trajectory_id, source_id FROM soop_sst.soop_sst_dm_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_dm_trajectory_data.geom) AND source_id = 21)
-  SELECT source_id,
-  m.trajectory_id,
-  	"LONGITUDE",
-	"LONGITUDE_quality_control",
-	"LATITUDE",
-	"LATITUDE_quality_control",
-	"TIME",
-	"TIME_quality_control",
-	0,
-	0,
-	"TEMP",
-	"TEMP_quality_control",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_sst.soop_sst_dm_trajectory_data d ON m.trajectory_id = d.trajectory_id
-	);
-		
+\echo 'SOOP-SST DM'
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+geom
+)	
+SELECT 
+s.source_id,
+d.trajectory_id,
+d."LONGITUDE",
+d."LONGITUDE_quality_control",
+d."LATITUDE",
+d."LATITUDE_quality_control",
+d."TIME",
+d."TIME_quality_control",
+0,
+d."TEMP",
+d."TEMP_quality_control",
+d.geom
+FROM  soop_sst.soop_sst_dm_trajectory_data d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name='soop_sst_dm_trajectory_data'
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'	
+	
 ---SOOP-SST NRT
-
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT trajectory_id, source_id FROM soop_sst.soop_sst_nrt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_sst.soop_sst_nrt_trajectory_data.geom) AND source_id = 22)
-  SELECT source_id,
-  m.trajectory_id,
-  	"LONGITUDE",
-	"LONGITUDE_quality_control",
-	"LATITUDE",
-	"LATITUDE_quality_control",
-	"TIME",
-	"TIME_quality_control",
-	0,
-	0,
-	"TEMP",
-	"TEMP_quality_control",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_sst.soop_sst_nrt_trajectory_data d ON m.trajectory_id = d.trajectory_id
-	);
+\echo 'SOOP-SST NRT'
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+geom
+)
+SELECT source_id,
+d.trajectory_id,
+d."LONGITUDE",
+d."LONGITUDE_quality_control",
+d."LATITUDE",
+d."LATITUDE_quality_control",
+d."TIME",
+d."TIME_quality_control",
+0,
+d."TEMP",
+d."TEMP_quality_control",
+d.geom
+FROM soop_sst.soop_sst_nrt_trajectory_data d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, d.geom) 
+AND s.table_name='soop_sst_nrt_trajectory_data'
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'
 	
 ---SOOP_TMV
-	
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT file_id, source_id FROM soop_tmv.soop_tmv_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_tmv.soop_tmv_trajectory_data.geom) AND source_id = 24)
-  SELECT source_id,
-  m.file_id,
-  	"LONGITUDE",
-	"LONGITUDE_quality_control",
-	"LATITUDE",
-	"LATITUDE_quality_control",
-	"TIME",
-	"TIME_quality_control",
-	0,
-	0,
-	"TEMP_1",
-	"TEMP_1_quality_control",
-	"PSAL",
-	"PSAL_quality_control",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_tmv.soop_tmv_trajectory_data d ON m.file_id = d.file_id
-	);
+\echo 'SOOP_TMV'	
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)	
+SELECT 
+s.source_id,
+d.file_id,
+d."LONGITUDE",
+d."LONGITUDE_quality_control",
+d."LATITUDE",
+d."LATITUDE_quality_control",
+d."TIME",
+d."TIME_quality_control",
+0,
+d."TEMP_1",
+d."TEMP_1_quality_control",
+d."PSAL",
+d."PSAL_quality_control",	
+geom
+FROM soop_tmv.soop_tmv_trajectory_data d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom, d.geom) 
+AND s.table_name='soop_tmv_trajectory_data'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01'
 	
 ---SOOP_ASF_MT	
-	
-INSERT INTO spatial_subset(	
-WITH m AS (SELECT DISTINCT cruise_id, source_id FROM soop_asf_mt.soop_asf_mt_trajectory_data, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, soop_asf_mt.soop_asf_mt_trajectory_data.geom) AND source_id = 23)
-  SELECT source_id,
-  m.cruise_id,
-  	"LONGITUDE",
-	NULL,
-	"LATITUDE",
-	NULL,
-	"TIME",
-	NULL,
-	0,
-	0,
-	"TEMP",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	geom,
-	NULL, 
-	NULL
-	FROM m
-  JOIN soop_asf_mt.soop_asf_mt_trajectory_data d ON m.cruise_id = d.cruise_id
-	);
-			
--- CSIRO TRAJECTORY
-		
+\echo 'SOOP_TMV'		
 INSERT INTO spatial_subset(
-  SELECT source_id,
-	"SURVEY_ID",
-	"LONGITUDE",
-	NULL,
-	"LATITUDE",
-	NULL,
-	"TIME" AT TIME ZONE 'UTC' AS TIME,
-	NULL,
-	0,
-	0,
-	"TEMPERATURE",
-	"TEMPERATURE_QC",
-	"SALINITY",
-	"SALINITY_QC",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	m.geom,
-	NULL,
-	NULL
-  FROM aodn_csiro_cmar.aodn_csiro_cmar_trajectory_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
-  	source_id = 32 -- Link to institutions table
-	);
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+)	
+SELECT 
+s.source_id,
+d.cruise_id,
+d."LONGITUDE",
+d."LATITUDE",
+d."TIME",
+0,
+d."TEMP",
+d.geom
+FROM soop_asf_mt.soop_asf_mt_trajectory_data d, "500m_isobath" p,source s 
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND  s.table_name='soop_asf_mt_trajectory_data'
+AND d."TIME" >= '1995-01-01' 
+AND d."TIME" < '2015-01-01'	
 		
+-- CSIRO TRAJECTORY
+\echo 'CSIRO TRAJECTORY'				
+INSERT INTO spatial_subset(
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT 
+s.source_id,
+d."SURVEY_ID",
+d."LONGITUDE",
+d."LATITUDE",
+d."TIME" AT TIME ZONE 'UTC' AS TIME,
+gsw_z_from_p(d."PRESSURE", d."LATITUDE")  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
+d."TEMPERATURE",
+d."TEMPERATURE_QC",
+d."SALINITY",
+d."SALINITY_QC",
+d.geom
+FROM aodn_csiro_cmar.aodn_csiro_cmar_trajectory_data d, "500m_isobath" p, source s
+WHERE ST_CONTAINS(p.geom, d.geom) 
+AND  s.table_name='aodn_csiro_cmar_trajectory_data'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01' 
+	
 	
 -- CSIRO UNDERWAY
-
+\echo 'CSIRO UNDERWAY'
 INSERT INTO spatial_subset(
-  SELECT source_id,
-	"SURVEY_ID",
-	"LONGITUDE",
-	NULL,
-	"LATITUDE",
-	NULL,
-	"TIME" AT TIME ZONE 'UTC' AS TIME,
-	NULL,
-	0,
-	0,
-	"SEA_SURFACE_TEMP",
-	"SEA_SURFACE_TEMP_QC" ,
-	"SALINITY",
-	"SALINITY_QC",
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	m.geom,
-	NULL,
-	NULL
-  FROM aodn_csiro_cmar.aodn_csiro_cmar_underway_data m, "500m_isobath", source
-  WHERE ST_CONTAINS("500m_isobath".geom, m.geom) AND -- Condition #1: In 500m Shapefile, no QC flags
-  	source_id = 33 -- Link to institutions table
-	);
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT 
+s.source_id,
+d."SURVEY_ID",
+d."LONGITUDE",
+d."LATITUDE",
+d."TIME" AT TIME ZONE 'UTC' AS TIME,
+0,
+d."SEA_SURFACE_TEMP",
+d."SEA_SURFACE_TEMP_QC" ,
+d."SALINITY",
+d."SALINITY_QC",
+d.geom
+FROM aodn_csiro_cmar.aodn_csiro_cmar_underway_data d, "500m_isobath" p, source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND  s.table_name='aodn_csiro_cmar_underway_data'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01'
 	
 		
-	-- WODB GLD
+-- WODB GLD
+\echo 'WODB GLD'
 INSERT INTO spatial_subset(
-        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, gld_deployments.geom FROM wodb.gld_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, gld_deployments.geom) AND source_id = 39)
-  SELECT source_id,
-        m."CAST_ID",
-        "LONGITUDE",
-        NULL,
-        "LATITUDE",
-        NULL,
-        "TIME",
-        NULL,
-        depth,
-        NULL,
-        temperature,
-        NULL,
-        salinity,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        geom,
-        NULL,
-        NULL
-  FROM m
-  LEFT JOIN wodb.gld_measurements d ON m."CAST_ID" = d.cast_id
-        );
-        
-        
-        	-- WODB SUR
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+)
+SELECT
+s.source_id, 
+d.cast_id,
+d.longitude,
+d.latitude,
+d.time timestamp with time zone as time,
+d.depth,
+d.temperature,
+d.salinity,
+d.geom
+FROM wodb.gld_deployments d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom,m.geom) 
+AND s."SUBFACILITY" = 'GLD' 
+AND s.schema_name = 'wodb'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01'
+
+                
+-- WODB SUR
+\echo 'WODB SUR'
 INSERT INTO spatial_subset(
-        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, sur_deployments.geom FROM wodb.sur_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, sur_deployments.geom) AND source_id = 43)
-  SELECT source_id,
-        m."CAST_ID",
-        "LONGITUDE",
-        NULL,
-        "LATITUDE",
-        NULL,
-        "TIME",
-        NULL,
-        depth,
-        NULL,
-        temperature,
-        NULL,
-        salinity,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        geom,
-        NULL,
-        NULL
-  FROM m
-  LEFT JOIN wodb.sur_measurements d ON m."CAST_ID" = d.cast_id
-        );
-        
-           	-- WODB UOR
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+)
+SELECT 
+s.source_id,
+d.cast_id,
+d.longitude,
+d.latitude,
+d.time timestamp with time zone as time,
+d.depth,
+d.temperature,
+d.salinity,
+d.geom
+FROM wodb.sur_measurement d, "500m_isobath" p,source s
+WHERE ST_CONTAINS(p.geom,m.geom) 
+AND s."SUBFACILITY" = 'SUR' 
+AND s.schema_name = 'wodb'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01'
+
+-- WODB UOR
+\echo 'WODB UOR'
 INSERT INTO spatial_subset(
-        WITH m AS (SELECT "CAST_ID", "LONGITUDE", "LATITUDE", "TIME", source_id, uor_deployments.geom FROM wodb.uor_deployments, "500m_isobath",source WHERE ST_CONTAINS("500m_isobath".geom, uor_deployments.geom) AND source_id = 44)
-  SELECT source_id,
-        m."CAST_ID",
-        "LONGITUDE",
-        NULL,
-        "LATITUDE",
-        NULL,
-        "TIME",
-        NULL,
-        depth,
-        NULL,
-        temperature,
-        NULL,
-        salinity,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        NULL,
-        m.geom,
-        NULL,
-        NULL
-  FROM m
-  LEFT JOIN wodb.uor_measurements d ON m."CAST_ID" = d.cast_id
-        );
+source_id,
+origin_id,
+"LONGITUDE",
+"LATITUDE",
+"TIME",
+"DEPTH",
+"TEMP",
+"PSAL",
+geom
+)
+SELECT 
+s.source_id,
+m."CAST_ID",
+m."LONGITUDE",
+m."LATITUDE",
+m."TIME",
+d.depth,
+d.temperature,
+d.salinity,
+d.geom
+FROM wodb.sur_deployments m, "500m_isobath" p,source s
+INNER JOIN wodb.sur_deployments d,
+ON m."CAST_ID" = d.cast_id
+WHERE ST_CONTAINS(p.geom,m.geom) 
+AND s."SUBFACILITY" = 'UOR' 
+AND s.schema_name = 'wodb'
+AND d."TIME" >= '1995-01-01'
+AND d."TIME" < '2015-01-01'
