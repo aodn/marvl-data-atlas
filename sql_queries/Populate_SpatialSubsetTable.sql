@@ -167,7 +167,7 @@ d.latitude,
 d.position_qc,
 d.juld,
 d.juld_qc,
--gsw_z_from_p(d.pres_adjusted, d.latitude),	--looks like pressure is PRES_REL. TO BE CONFIRMED!!!
+-gsw_z_from_p(d.pres_adjusted, d.latitude),
 d.pres_adjusted_qc,
 d.temp_adjusted,
 d.temp_adjusted_qc,
@@ -203,7 +203,7 @@ SELECT
 s.source_id,
 m."CAST_ID",
 m."LONGITUDE",
-'1',	--TO BE CONFIRMED!!!
+'1',
 m."LATITUDE",
 '1',
 m."TIME",
@@ -294,14 +294,14 @@ d."LONGITUDE",
 d."LONGITUDE_quality_control",
 d."LATITUDE",
 d."LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-max(d."TIME_quality_control") AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH",
-max(d."DEPTH_quality_control") AS "DEPTH_quality_control",
-avg(d."TEMP") AS "TEMP",
-max(d."TEMP_quality_control") AS "TEMP_quality_control",
-avg(d."PSAL") AS "PSAL",
-max(d."PSAL_quality_control") AS "PSAL_quality_control",
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+max(d."TIME_quality_control"),
+avg(d."DEPTH"),
+max(d."DEPTH_quality_control"),
+avg(d."TEMP"),
+max(d."TEMP_quality_control"),
+avg(d."PSAL"),
+max(d."PSAL_quality_control"),
 d.geom
 FROM anmn_ts.anmn_ts_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
@@ -335,14 +335,14 @@ d."LONGITUDE",
 d."LONGITUDE_quality_control",
 d."LATITUDE",
 d."LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-0 AS "DEPTH",
-'1' AS "DEPTH_quality_control",
-avg(d."SSTI") AS "TEMP",
-max(d."SSTI_quality_control") AS "TEMP_quality_control",
-NULL AS "PSAL",
-NULL AS "PSAL_quality_control",
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+0,
+'1',
+avg(d."SSTI"),
+max(d."SSTI_quality_control"),
+NULL,
+NULL,
 d.geom
 FROM anmn_nrs_rt_meteo.anmn_nrs_rt_meteo_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
@@ -376,61 +376,20 @@ d."LONGITUDE",
 d."LONGITUDE_quality_control",
 d."LATITUDE",
 d."LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-max(d."TIME_quality_control") AS "TIME_quality_control",
--gsw_z_from_p(avg(d."PRES_REL"), d."LATITUDE") AS "DEPTH",
-max(d."PRES_REL_quality_control") AS "DEPTH_quality_control",
-avg(d."TEMP") AS "TEMP",
-max(d."TEMP_quality_control") AS "TEMP_quality_control",
-avg(d."PSAL") AS "PSAL",
-max(d."PSAL_quality_control") AS "PSAL_quality_control",
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+max(d."TIME_quality_control"),
+-gsw_z_from_p(avg(d."PRES_REL"), d."LATITUDE"),
+max(d."PRES_REL_quality_control"),
+avg(d."TEMP"),
+max(d."TEMP_quality_control"),
+avg(d."PSAL"),
+max(d."PSAL_quality_control"),
 d.geom
 FROM anmn_nrs_rt_bio.anmn_nrs_rt_bio_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anmn_nrs_rt_bio_timeseries_data'
 GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", d."LONGITUDE_quality_control", d."LATITUDE", d."LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.timeseries_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
-
--- ANMN_NRS_BGC chemistry timeSeries
-\echo 'ANMN_NRS_BGC chemistry timeSeries'
-INSERT INTO spatial_subset (
-source_id,
-origin_id,
-"LONGITUDE",
-"LONGITUDE_QC",
-"LATITUDE",
-"LATITUDE_QC",
-"TIME",
-"TIME_QC",
-"DEPTH",
-"DEPTH_QC",
-"TEMP",
-"TEMP_QC",
-"PSAL",
-"PSAL_QC",
-geom
-)
-SELECT 
-s.source_id,
-d."NRS_SAMPLE_CODE", -- TO BE CONFIRMED!!!
-d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
-d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."UTC_TRIP_START_TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."SAMPLE_DEPTH_M") AS "DEPTH",
-'1' AS "DEPTH_quality_control",
-NULL AS "TEMP",
-NULL AS "TEMP_quality_control",
-avg(d."SALINITY") AS "PSAL",
-max(d."SALINITY_FLAG") AS "PSAL_quality_control", -- is the flag scale the old IODE one?
-d.geom
-FROM anmn_nrs_bgc.anmn_nrs_bgc_chemistry_data d, marvl3."500m_isobath" p, marvl3.source s
-WHERE ST_CONTAINS(p.geom, d.geom)
-AND s.table_name = 'anmn_nrs_bgc_chemistry_data'
-GROUP BY s.source_id, d."NRS_SAMPLE_CODE", d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."UTC_TRIP_START_TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d."NRS_SAMPLE_CODE", date_trunc('hour', d."UTC_TRIP_START_TIME" AT TIME ZONE 'UTC');
 
 -- ANMN_AM_DM timeSeries
 \echo 'ANMN_AM_DM timeSeries'
@@ -453,19 +412,19 @@ geom
 )
 SELECT
 s.source_id,
-d.file_id, -- TO BE CONFIRMED!!!
+d.file_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-max(d."TIME_quality_control") AS "TIME_quality_control",
-0 AS "DEPTH",
-'1' AS "DEPTH_quality_control",
-avg(d."TEMP") AS "TEMP",
-max(d."TEMP_quality_control") AS "TEMP_quality_control",
-avg(d."PSAL") AS "PSAL",
-max(d."PSAL_quality_control") AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+max(d."TIME_quality_control"),
+0,
+'1',
+avg(d."TEMP"),
+max(d."TEMP_quality_control"),
+avg(d."PSAL"),
+max(d."PSAL_quality_control"),
 d.geom
 FROM anmn_am_dm.anmn_am_dm_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
@@ -496,22 +455,22 @@ SELECT
 s.source_id,
 d.timeseries_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH",
-'1' AS "DEPTH_quality_control",
-avg(d."TEMP") AS "TEMP",
-'1' AS "TEMP_quality_control",
-avg(d."PSAL") AS "PSAL",
-'1' AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+avg(d."TEMP"),
+'1',
+avg(d."PSAL"),
+'1',
 d.geom
 FROM anmn_burst_avg.anmn_burst_avg_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anmn_burst_avg_timeseries_data'
-GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.timeseries_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 -- ANMN_NRS_YON_DAR timeSeries
@@ -525,6 +484,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -537,23 +498,25 @@ SELECT
 s.source_id,
 d.channel_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH", -- this is the nominal depth... actual depth or pressure is lost
-'1' AS "DEPTH_quality_control",
-avg(d."VALUES") AS "TEMP",
-max(d."VALUES_quality_control") AS "TEMP_quality_control",
-NULL AS "PSAL",
-NULL AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+NULL,
+NULL,
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
 d.geom
 FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anmn_nrs_yon_dar_timeseries_data'
 AND d."VARNAME" = 'TEMP'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 \echo 'ANMN_NRS_YON_DAR PSAL timeSeries'
@@ -566,6 +529,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -578,23 +543,115 @@ SELECT
 s.source_id,
 d.channel_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH", -- this is the nominal depth... actual depth or pressure is lost
-'1' AS "DEPTH_quality_control",
-NULL AS "TEMP",
-NULL AS "TEMP_quality_control",
-avg(d."VALUES") AS "PSAL",
-max(d."VALUES_quality_control") AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+NULL,
+NULL,
+NULL,
+NULL,
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
 d.geom
 FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anmn_nrs_yon_dar_timeseries_data'
 AND d."VARNAME" = 'PSAL'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+
+\echo 'ANMN_NRS_YON_DAR DEPTH timeSeries'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.channel_id,
+d."LONGITUDE",
+'1',
+d."LATITUDE",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
+NULL,
+NULL,
+d.geom
+FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'anmn_nrs_yon_dar_timeseries_data'
+AND d."VARNAME" = 'DEPTH'
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+
+\echo 'ANMN_NRS_YON_DAR PRES_REL timeSeries'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.channel_id,
+d."LONGITUDE",
+'1',
+d."LATITUDE",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+-gsw_z_from_p(avg(d."VALUES"), d."LATITUDE"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
+NULL,
+NULL,
+d.geom
+FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'anmn_nrs_yon_dar_timeseries_data'
+AND d."VARNAME" = 'PRES_REL'
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 -- FAIMMS timeSeries
@@ -608,6 +665,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -620,23 +679,25 @@ SELECT
 s.source_id,
 d.channel_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH", -- this is the nominal depth... actual depth or pressure is lost
-'1' AS "DEPTH_quality_control",
-avg(d."VALUES") AS "TEMP",
-max(d."VALUES_quality_control") AS "TEMP_quality_control",
-NULL AS "PSAL",
-NULL AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+NULL,
+NULL,
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
 d.geom
 FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'TEMP'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 \echo 'FAIMMS PSAL timeSeries'
@@ -649,6 +710,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -661,23 +724,115 @@ SELECT
 s.source_id,
 d.channel_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-avg(d."DEPTH") AS "DEPTH", -- this is the nominal depth... actual depth or pressure is lost
-'1' AS "DEPTH_quality_control",
-NULL AS "TEMP",
-NULL AS "TEMP_quality_control",
-avg(d."VALUES") AS "PSAL",
-max(d."VALUES_quality_control") AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+NULL,
+NULL,
+NULL,
+NULL,
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
 d.geom
 FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PSAL'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+
+\echo 'FAIMMS DEPTH timeSeries'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.channel_id,
+d."LONGITUDE",
+'1',
+d."LATITUDE",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+avg(d."VALUES"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
+NULL,
+NULL,
+d.geom
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'faimms_timeseries_data'
+AND d."VARNAME" = 'DEPTH'
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+
+\echo 'FAIMMS PRES_REL timeSeries'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.channel_id,
+d."LONGITUDE",
+'1',
+d."LATITUDE",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+-gsw_z_from_p(avg(d."VALUES"), d."LATITUDE"),
+max(d."VALUES_quality_control"),
+NULL,
+NULL,
+NULL,
+NULL,
+d.geom
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'faimms_timeseries_data'
+AND d."VARNAME" = 'PRES_REL'
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 -- SRS_ALTIMETRY timeSeries
@@ -691,6 +846,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -701,29 +858,27 @@ geom
 )
 SELECT
 s.source_id,
-d.file_id, -- TO BE CONFIRMED!!!
+d.file_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-CASE WHEN avg(d."PRES") IS NOT NULL THEN -gsw_z_from_p(avg(d."PRES")-10.1325, d."LATITUDE") -- actual depth from pressure
-	ELSE avg(d."DEPTH") -- nominal depth
-END AS "DEPTH",
-CASE WHEN avg(d."PRES") IS NOT NULL THEN max(d."PRES_quality_control")
-	ELSE '1'
-END AS "DEPTH_quality_control",
-avg(d."TEMP") AS "TEMP",
-max(d."TEMP_quality_control") AS "TEMP_quality_control",
-avg(d."PSAL") AS "PSAL",
-max(d."PSAL_quality_control") AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+avg(d."DEPTH"),
+'1',
+-gsw_z_from_p(avg(d."PRES")-10.1325, d."LATITUDE"),
+max(d."PRES_quality_control"),
+avg(d."TEMP"),
+max(d."TEMP_quality_control"),
+avg(d."PSAL"),
+max(d."PSAL_quality_control"),
 d.geom
 FROM srs_altimetry.measurements d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.schema_name = 'srs_altimetry'
 AND s.table_name = 'measurements'
-GROUP BY s.source_id, d.file_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.file_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.file_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 -- CSIRO Mooring
@@ -737,6 +892,8 @@ origin_id,
 "LATITUDE_QC",
 "TIME",
 "TIME_QC",
+"NOMINAL_DEPTH",
+"NOMINAL_DEPTH_QC",
 "DEPTH",
 "DEPTH_QC",
 "TEMP",
@@ -749,22 +906,24 @@ SELECT
 s.source_id,
 COALESCE(d."SURVEY_ID"||'+'||d."SERIAL_NO"),
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control",
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control", -- there are [...]_QC_FLAG fields but what is their associated flag scale??? TO BE CONFIRMED!!!
-avg(d."NOMINAL_METER_DEPTH") AS "DEPTH", -- this is the nominal depth. Field PRESSURE is always NULL anyway...
-'1' AS "DEPTH_quality_control",
-avg(d."TEMPERATURE") AS "TEMP",
-'1' AS "TEMP_quality_control",
-avg(d."SALINITY") AS "PSAL",
-'1' AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1', -- there are [...]_QC_FLAG fields but what is their associated flag scale??? TO BE CONFIRMED!!!
+avg(d."NOMINAL_METER_DEPTH"),
+'1',
+-gsw_z_from_p(avg(d."PRESSURE"), d."LATITUDE"), -- PRES or PRES_REL? TO BE CONFIRMED!!! Anyway, is always NULL...
+'1',
+avg(d."TEMPERATURE"),
+'1',
+avg(d."SALINITY"),
+'1',
 d.geom
 FROM aodn_csiro_cmar.aodn_csiro_cmar_mooring_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'aodn_csiro_cmar_mooring_data'
-GROUP BY s.source_id, COALESCE(d."SURVEY_ID"||'+'||d."SERIAL_NO"), d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, COALESCE(d."SURVEY_ID"||'+'||d."SERIAL_NO"), d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY COALESCE(d."SURVEY_ID"||'+'||d."SERIAL_NO"), date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
 -- RAN SST
@@ -790,25 +949,114 @@ SELECT
 s.source_id,
 d.file_id,
 d."LONGITUDE",
-'1' AS "LONGITUDE_quality_control", -- TO BE CONFIRMED!!!
+'1',
 d."LATITUDE",
-'1' AS "LATITUDE_quality_control",
-date_trunc('hour', d."TIME" AT TIME ZONE 'UTC') AS "TIME",
-'1' AS "TIME_quality_control",
-0 AS "DEPTH",
-'1' AS "DEPTH_quality_control",
-avg(d."SST") AS "TEMP",
-'1' AS "TEMP_quality_control",
-NULL AS "PSAL",
-NULL AS "PSAL_quality_control",
+'1',
+date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+0,
+'1',
+avg(d."SST"),
+'1',
+NULL,
+NULL,
 d.geom
 FROM aodn_ran_sst.ran_sst_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'ran_sst_data'
-GROUP BY s.source_id, d.file_id, d."LONGITUDE", "LONGITUDE_quality_control", d."LATITUDE", "LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
+GROUP BY s.source_id, d.file_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
 ORDER BY d.file_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
 
+-- SOOP TMV trajectory
+\echo 'SOOP TMV trajectory'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.file_id,
+avg(d."LONGITUDE"),
+max(d."LONGITUDE_quality_control"),
+avg(d."LATITUDE"),
+max(d."LATITUDE_quality_control"),
+date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'),
+max(d."TIME_quality_control"),
+0,
+'1',
+avg(d."TEMP_2"), -- TEMP_2 is collected by the sensor on the hull, TEMP_1 inside the water pump.
+max(d."TEMP_2_quality_control"),
+avg(d."PSAL"), -- CNDC collected via water pump and PSAL computed using TEMP_1.
+max(d."PSAL_quality_control"),
+ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE")||')'), '4326') -- geom is re-created from averaged positions over 1min
+FROM soop_tmv.soop_tmv_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'soop_tmv_trajectory_data'
+AND EXTRACT(MINUTE FROM date_trunc('minute', d."TIME" AT TIME ZONE 'UTC')) IN (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55) -- only keep 1 sample every 5min
+GROUP BY s.source_id, d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC') -- at 10knots, 1min <=> ~300m (distance over which averaging is still sensible)
+ORDER BY d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC');
+
+-- SOOP TRV trajectory
+\echo 'SOOP TRV trajectory'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+d.trip_id,
+avg(d."LONGITUDE"),
+'1', -- TO BE CONFIRMED!!!
+avg(d."LATITUDE"),
+'1',
+date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'),
+'1',
+0,
+'1',
+avg(d."Seawater_Intake_Temperature"), -- TEMP_2 is collected by the sensor on the hull, TEMP_1 inside the water pump.
+'1',
+avg(d."PSAL"), -- CNDC collected via water pump and PSAL computed using TEMP_1.
+'1',
+ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE")||')'), '4326') -- geom is re-created from averaged positions over 1min
+FROM soop_trv.soop_trv_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND s.table_name = 'soop_trv_trajectory_data'
+AND EXTRACT(MINUTE FROM date_trunc('minute', d."TIME" AT TIME ZONE 'UTC')) IN (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55) -- only keep 1 sample every 5min
+GROUP BY s.source_id, d.trip_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC') -- at 10knots, 1min <=> ~300m (distance over which averaging is still sensible)
+ORDER BY d.trip_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC');
+
 -- need to set empty field's flag to 9
+\echo 'Update NOMINAL_DEPTH_QC'
+UPDATE spatial_subset
+SET "NOMINAL_DEPTH_QC" = 9
+WHERE "NOMINAL_DEPTH" IS NULL;
+
 \echo 'Update DEPTH_QC'
 UPDATE spatial_subset
 SET "DEPTH_QC" = 9

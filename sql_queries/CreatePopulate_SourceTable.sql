@@ -17,7 +17,6 @@ INSERT INTO source (SELECT 'IMOS/AODN', 'ACORN', '', '', 'gridded','','','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANFOG', '', 'DM', 'trajectory','anfog_dm','anfog_dm_trajectory_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'CTD', 'NRS', 'profile','anmn_nrs_ctd_profiles','anmn_nrs_ctd_profiles_data','cruise_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'Acidification', 'DM', 'timeSeries','anmn_am_dm','anmn_am_dm_data','file_id');
-INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'BGC', 'NRS', 'profile','anmn_nrs_bgc','anmn_nrs_bgc_chemistry_data','NRS_SAMPLE_CODE');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'Burst average', '', 'timeSeries','anmn_burst_avg','anmn_burst_avg_timeseries_data','timeseries_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'RT bio', 'NRS', 'timeSeries','anmn_nrs_rt_bio','anmn_nrs_rt_bio_timeseries_data','timeseries_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'RT meteo', 'NRS', 'timeSeries','anmn_nrs_rt_meteo','anmn_nrs_rt_meteo_timeseries_data','timeseries_id');
