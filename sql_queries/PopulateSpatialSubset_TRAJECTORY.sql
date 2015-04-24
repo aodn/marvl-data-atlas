@@ -3,7 +3,7 @@ SET SEARCH_PATH = marvl3, public;
 	
 ----AUV
 \echo 'AUV'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -32,7 +32,7 @@ AND d."TIME" < '2015-01-01'
 	
 ---SOOP-CO2	
 \echo 'SOOP-CO2'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -68,11 +68,15 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name='soop_co2_trajectory_data' 
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'
-   
-	
+AND vessel_name IN('L''Astrolabe', 'Aurora Australis')	   
+
+DELETE "TEMP" FROM marvl3.spatial_subset WHERE source_id=19 -- delete Temperature data from SOOP-CO2 will be extracted from other schemas
+ 	
+
+
 ---SOOP-TRV
 \echo 'SOOP-TRV'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -102,7 +106,7 @@ AND d."TIME" < '2015-01-01'
 	
 ---SOOP-SST DM	
 \echo 'SOOP-SST DM'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -137,7 +141,7 @@ AND d."TIME" < '2015-01-01'
 	
 ---SOOP-SST NRT
 \echo 'SOOP-SST NRT'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -168,10 +172,17 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name='soop_sst_nrt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'
-	
+AND vessel_name NOT IN('Xutra Bhum', 'Wana Bhum','RV Cape Ferguson')	--'Xutra Bhum', 'Wana Bhum' inSOOP-SST DM; 'RV Cape Ferguson' in SOOP-TRV
+
+DELETE from marvl3.spatial_subset m where 
+m.pkid IN (select trajectory_id 
+from soop_sst.soop_sst_nrt_trajectory_data d 
+join marvl3.spatial_subset m on d.trajectory_id::character =m.origin_id
+where vessel_name IN ('L''Astrolabe') AND d.TIME <'2013-04-15- 00:00:00'
+) -- Astrolabe SOOP-SST-NRT data processed to DM product only up to Apr 2013  
 ---SOOP_TMV
 \echo 'SOOP_TMV'	
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -210,7 +221,7 @@ AND d."TIME" < '2015-01-01'
 	
 ---SOOP_ASF_MT	
 \echo 'SOOP_TMV'		
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -235,10 +246,11 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND  s.table_name='soop_asf_mt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'	
-		
+AND vessel_name NOT IN ('Southern Surveyor')		--SouthernS excluded from here as data from this vessel will be extracted from CSIRO_underway	
+
 -- CSIRO TRAJECTORY
 \echo 'CSIRO TRAJECTORY'				
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -272,7 +284,7 @@ AND d."TIME" < '2015-01-01'
 	
 -- CSIRO UNDERWAY
 \echo 'CSIRO UNDERWAY'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -306,7 +318,7 @@ AND d."TIME" < '2015-01-01'
 		
 -- WODB GLD
 \echo 'WODB GLD'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -337,7 +349,7 @@ AND d."TIME" < '2015-01-01'
                 
 -- WODB SUR
 \echo 'WODB SUR'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -367,7 +379,7 @@ AND d."TIME" < '2015-01-01'
 
 -- WODB UOR
 \echo 'WODB UOR'
-INSERT INTO spatial_subset(
+INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
