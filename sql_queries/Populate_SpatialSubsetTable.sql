@@ -27,12 +27,12 @@ SELECT
 s.source_id,
 d.profile_id,
 d.lon,
-'0',	--looks like data hasn't been QC'd at all. TO BE CONFIRMED!!!
+'0',
 d.lat,
 '0',
 d.timestamp AT TIME ZONE 'UTC',
 '0',
--gsw_z_from_p(d.pressure, d.lat),	--looks like pressure is a PRES_REL (displays ~0dbar at the surface). TO BE CONFIRMED!!!
+-gsw_z_from_p(d.pressure, d.lat),
 '0',
 d.temp_vals,
 '0',
@@ -41,7 +41,7 @@ d.sal_corrected_vals,
 d.geom
 FROM aatams_sattag_dm.aatams_sattag_dm_profile_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
-AND s.table_name = 'aatams_sattag_dm_profile_data' -- it is best not to hard code source_id value since it may change...
+AND s.table_name = 'aatams_sattag_dm_profile_data'
 AND d.timestamp >= '1995-01-01'
 AND d.timestamp < '2015-01-01'
 -- Exclude devices that have been recovered
@@ -121,12 +121,12 @@ SELECT
 s.source_id,
 d.profile_id,
 d.lon,
-'0',	--TO BE CONFIRMED!!!
+'0',
 d.lat,
 '0',
 d.timestamp AT TIME ZONE 'UTC',
 '0',
--gsw_z_from_p(d.pressure, d.lat),	--is pressure PRES or PRES_REL? TO BE CONFIRMED!!!
+-gsw_z_from_p(d.pressure, d.lat),
 '0',
 d.temp_vals,
 '0',
@@ -264,6 +264,50 @@ INNER JOIN wodb.ctd_measurements d
 ON m."CAST_ID" = d.cast_id
 WHERE ST_CONTAINS(p.geom, m.geom)
 AND s."SUBFACILITY" = 'CTD'
+AND s.schema_name = 'wodb'
+AND m."TIME" >= '1995-01-01'
+AND m."TIME" < '2015-01-01';
+
+-- WODB UOR
+\echo 'WODB UOR'
+INSERT INTO spatial_subset (
+source_id,
+origin_id,
+"LONGITUDE",
+"LONGITUDE_QC",
+"LATITUDE",
+"LATITUDE_QC",
+"TIME",
+"TIME_QC",
+"DEPTH",
+"DEPTH_QC",
+"TEMP",
+"TEMP_QC",
+"PSAL",
+"PSAL_QC",
+geom
+)
+SELECT
+s.source_id,
+m."CAST_ID",
+m."LONGITUDE",
+'1',
+m."LATITUDE",
+'1',
+m."TIME",
+'1',
+d.depth,
+'1',
+d.temperature,
+'1',
+d.salinity,
+'1',
+m.geom
+FROM wodb.uor_deployments m, marvl3."500m_isobath" p, source s
+INNER JOIN wodb.uor_measurements d
+ON m."CAST_ID" = d.cast_id
+WHERE ST_CONTAINS(p.geom, m.geom)
+AND s."SUBFACILITY" = 'UOR'
 AND s.schema_name = 'wodb'
 AND m."TIME" >= '1995-01-01'
 AND m."TIME" < '2015-01-01';
@@ -910,15 +954,35 @@ d."LONGITUDE",
 d."LATITUDE",
 '1',
 date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'),
-'1', -- there are [...]_QC_FLAG fields but what is their associated flag scale??? TO BE CONFIRMED!!!
+CASE
+	WHEN max(d."TIME_QC_FLAG") <= 63 THEN '1'
+	WHEN max(d."TIME_QC_FLAG") > 63 AND max(d."TIME_QC_FLAG") <= 127 THEN '3'
+	WHEN max(d."TIME_QC_FLAG") > 127 AND max(d."TIME_QC_FLAG") <= 191 THEN '4'
+	ELSE '0'
+END,
 avg(d."NOMINAL_METER_DEPTH"),
 '1',
--gsw_z_from_p(avg(d."PRESSURE"), d."LATITUDE"), -- PRES or PRES_REL? TO BE CONFIRMED!!! Anyway, is always NULL...
-'1',
+-gsw_z_from_p(avg(d."PRESSURE"), d."LATITUDE"),
+CASE
+	WHEN max(d."PRESSURE_QC_FLAG") <= 63 THEN '1'
+	WHEN max(d."PRESSURE_QC_FLAG") > 63 AND max(d."PRESSURE_QC_FLAG") <= 127 THEN '3'
+	WHEN max(d."PRESSURE_QC_FLAG") > 127 AND max(d."PRESSURE_QC_FLAG") <= 191 THEN '4'
+	ELSE '0'
+END,
 avg(d."TEMPERATURE"),
-'1',
+CASE
+	WHEN max(d."TEMPERATURE_QC_FLAG") <= 63 THEN '1'
+	WHEN max(d."TEMPERATURE_QC_FLAG") > 63 AND max(d."TEMPERATURE_QC_FLAG") <= 127 THEN '3'
+	WHEN max(d."TEMPERATURE_QC_FLAG") > 127 AND max(d."TEMPERATURE_QC_FLAG") <= 191 THEN '4'
+	ELSE '0'
+END,
 avg(d."SALINITY"),
-'1',
+CASE
+	WHEN max(d."SALINITY_QC_FLAG") <= 63 THEN '1'
+	WHEN max(d."SALINITY_QC_FLAG") > 63 AND max(d."SALINITY_QC_FLAG") <= 127 THEN '3'
+	WHEN max(d."SALINITY_QC_FLAG") > 127 AND max(d."SALINITY_QC_FLAG") <= 191 THEN '4'
+	ELSE '0'
+END,
 d.geom
 FROM aodn_csiro_cmar.aodn_csiro_cmar_mooring_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)

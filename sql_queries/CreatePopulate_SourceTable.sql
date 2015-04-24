@@ -55,7 +55,7 @@ INSERT INTO source (SELECT 'WODB', '', 'MBT', '', 'profile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'OSD', '', 'profile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'PFL', '', 'trajectoryProfile','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'SUR', '', 'trajectory','wodb','','');
-INSERT INTO source (SELECT 'WODB', '', 'UOR', '', 'trajectory','wodb','','');
+INSERT INTO source (SELECT 'WODB', '', 'UOR', '', 'trajectory','wodb','uor_measurements','cast_id');
 INSERT INTO source (SELECT 'WODB', '', 'XBT', '', 'profile','wodb','xbt_measurements','cast_id');
 
 ALTER TABLE source ADD COLUMN source_id bigserial;
