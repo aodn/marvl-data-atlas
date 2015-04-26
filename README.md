@@ -66,6 +66,8 @@ Modify the `imos_backup/restore` section to your liking:
     },
 ```
 
+The different dumps for each collection are backed up in /mnt/imos-t4/backups/backups/2-nsp-mel.emii.org.au/pgsql/<YYYY.MM.DD.HH.MN.SS>/harvest on 10-nsp.
+
 Run the following:
 ```
 # Reload + provision box:

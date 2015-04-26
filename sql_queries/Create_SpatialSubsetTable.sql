@@ -10,6 +10,8 @@ CREATE TABLE spatial_subset (
 	"LATITUDE_QC" text,
 	"TIME" timestamp with time zone,
 	"TIME_QC" text,
+	"NOMINAL_DEPTH" real,
+	"NOMINAL_DEPTH_QC" text,
 	"DEPTH" real,
 	"DEPTH_QC" text,
 	"TEMP" real,
@@ -29,4 +31,5 @@ CREATE TABLE spatial_subset (
 ALTER TABLE spatial_subset 
 ADD CONSTRAINT spatial_subset_pkid PRIMARY KEY (pkid);
 
+DROP SEQUENCE IF EXISTS duplicate_seq;
 CREATE SEQUENCE duplicate_seq START 1;
