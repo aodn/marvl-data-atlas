@@ -34,3 +34,4 @@ cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_mooring.sql | psql -h 
 cat ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql | psql -h po.aodn.org.au -d harvest -U admin
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h po.aodn.org.au -d harvest -U admin
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h po.aodn.org.au -d harvest -U admin
+cat ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql | psql -h po.aodn.org.au -d harvest -U admin
