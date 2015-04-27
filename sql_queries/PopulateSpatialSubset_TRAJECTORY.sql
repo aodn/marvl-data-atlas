@@ -71,38 +71,7 @@ AND d."TIME" < '2015-01-01'
 AND vessel_name IN('L''Astrolabe', 'Aurora Australis')	   
 
 DELETE "TEMP" FROM marvl3.spatial_subset WHERE source_id=19 -- delete Temperature data from SOOP-CO2 will be extracted from other schemas
- 	
 
-
----SOOP-TRV
-\echo 'SOOP-TRV'
-INSERT INTO marvl3.spatial_subset(
-source_id,
-origin_id,
-"LONGITUDE",
-"LATITUDE",
-"TIME",
-"DEPTH",
-"TEMP",
-"PSAL",
-geom
-) 
-SELECT 
-s.source_id,
-d.trip_id,
-d."LONGITUDE",
-d."LATITUDE",
-d."TIME",
-0,
-d."Seawater_Intake_Temperature",
-d."PSAL",
-d.geom
-FROM soop_trv.soop_trv_trajectory_data d, "500m_isobath" p,source s
-WHERE ST_CONTAINS(p.geom, soop_trv.soop_trv_trajectory_data.geom) 
-AND s.table_name='soop_trv_trajectory_data' 
-AND d."TIME" >= '1995-01-01' 
-AND d."TIME" < '2015-01-01'
- 
 	
 ---SOOP-SST DM	
 \echo 'SOOP-SST DM'
@@ -180,44 +149,7 @@ from soop_sst.soop_sst_nrt_trajectory_data d
 join marvl3.spatial_subset m on d.trajectory_id::character =m.origin_id
 where vessel_name IN ('L''Astrolabe') AND d.TIME <'2013-04-15- 00:00:00'
 ) -- Astrolabe SOOP-SST-NRT data processed to DM product only up to Apr 2013  
----SOOP_TMV
-\echo 'SOOP_TMV'	
-INSERT INTO marvl3.spatial_subset(
-source_id,
-origin_id,
-"LONGITUDE",
-"LONGITUDE_QC",
-"LATITUDE",
-"LATITUDE_QC",
-"TIME",
-"TIME_QC",
-"DEPTH",
-"TEMP",
-"TEMP_QC",
-"PSAL",
-"PSAL_QC",
-geom
-)	
-SELECT 
-s.source_id,
-d.file_id,
-d."LONGITUDE",
-d."LONGITUDE_quality_control",
-d."LATITUDE",
-d."LATITUDE_quality_control",
-d."TIME",
-d."TIME_quality_control",
-0,
-d."TEMP_1",
-d."TEMP_1_quality_control",
-d."PSAL",
-d."PSAL_quality_control",	
-geom
-FROM soop_tmv.soop_tmv_trajectory_data d, "500m_isobath" p,source s
-WHERE ST_CONTAINS(p.geom, d.geom) 
-AND s.table_name='soop_tmv_trajectory_data'
-AND d."TIME" >= '1995-01-01'
-AND d."TIME" < '2015-01-01'
+
 	
 ---SOOP_ASF_MT	
 \echo 'SOOP_TMV'		
@@ -377,34 +309,3 @@ AND s.schema_name = 'wodb'
 AND d."TIME" >= '1995-01-01'
 AND d."TIME" < '2015-01-01'
 
--- WODB UOR
-\echo 'WODB UOR'
-INSERT INTO marvl3.spatial_subset(
-source_id,
-origin_id,
-"LONGITUDE",
-"LATITUDE",
-"TIME",
-"DEPTH",
-"TEMP",
-"PSAL",
-geom
-)
-SELECT 
-s.source_id,
-m."CAST_ID",
-m."LONGITUDE",
-m."LATITUDE",
-m."TIME",
-d.depth,
-d.temperature,
-d.salinity,
-d.geom
-FROM wodb.sur_deployments m, "500m_isobath" p,source s
-INNER JOIN wodb.sur_deployments d,
-ON m."CAST_ID" = d.cast_id
-WHERE ST_CONTAINS(p.geom,m.geom) 
-AND s."SUBFACILITY" = 'UOR' 
-AND s.schema_name = 'wodb'
-AND d."TIME" >= '1995-01-01'
-AND d."TIME" < '2015-01-01'
