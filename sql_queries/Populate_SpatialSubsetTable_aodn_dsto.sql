@@ -1,7 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
--- ANFOG DM
-\echo 'ANFOG DM'
+-- AODN DSTO
+\echo 'AODN DSTO'
 INSERT INTO spatial_subset (
 source_id,
 origin_id,
@@ -35,7 +35,7 @@ max(replace(replace(d."TEMP_quality_control", '8', '2'), '9', '')),
 avg(d."PSAL"),
 max(replace(replace(d."PSAL_quality_control", '8', '2'), '9', '')),
 ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE")||')'), '4326') -- geom is re-created from averaged positions
-FROM anfog_dm.anfog_dm_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM aodn_dsto.aodn_dsto_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anfog_dm_trajectory_data'
 GROUP BY s.source_id, d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'), width_bucket(CASE WHEN d."DEPTH" IS NOT NULL THEN d."DEPTH" ELSE -gsw_z_from_p(d."PRES", d."LATITUDE") END, -2.5, 502.5, 101)

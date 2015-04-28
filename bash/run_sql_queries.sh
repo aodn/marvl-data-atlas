@@ -6,6 +6,7 @@
 cat ../sql_queries/CreatePopulate_SourceTable.sql | psql -h po.aodn.org.au -d harvest -U admin
 
 # create and populate the table 500m_isobath
+echo "DROP TABLE IF EXISTS marvl3.\"500m_isobath\";" | psql -h po.aodn.org.au -d harvest -U admin
 shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath" | psql -h po.aodn.org.au -d harvest -U admin
 
 # create the table spatial_subset
@@ -35,3 +36,4 @@ cat ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql | psql -h po.aodn.org
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h po.aodn.org.au -d harvest -U admin
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h po.aodn.org.au -d harvest -U admin
 cat ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql | psql -h po.aodn.org.au -d harvest -U admin
+cat ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql | psql -h po.aodn.org.au -d harvest -U admin
