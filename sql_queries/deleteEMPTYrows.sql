@@ -1,1 +1,0 @@
-﻿ delete from marvl3.spatial_subset WHERE "TEMP" IS NULL and "PSAL" IS NULL and "DEPTH" IS NULL
