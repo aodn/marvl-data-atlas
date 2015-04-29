@@ -38,3 +38,6 @@ cat ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql | psql -h 2-nec-hob
 
 # create the table data_atlas
 cat ../sql_queries/Create_DataAtlasTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+
+# populate the table data_atlas
+cat ../sql_queries/Populate_DataAtlasTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
