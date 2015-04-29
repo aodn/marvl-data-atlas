@@ -43,8 +43,7 @@ FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'TEMP'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS PSAL timeSeries'
 INSERT INTO spatial_subset (
@@ -88,8 +87,7 @@ FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PSAL'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS DEPTH timeSeries'
 INSERT INTO spatial_subset (
@@ -133,8 +131,7 @@ FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'DEPTH'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS PRES_REL timeSeries'
 INSERT INTO spatial_subset (
@@ -178,5 +175,4 @@ FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PRES_REL'
-GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.channel_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;

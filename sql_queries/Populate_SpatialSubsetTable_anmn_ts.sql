@@ -38,5 +38,4 @@ d.geom
 FROM anmn_ts.anmn_ts_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'anmn_ts_timeseries_data'
-GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", d."LONGITUDE_quality_control", d."LATITUDE", d."LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.timeseries_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", d."LONGITUDE_quality_control", d."LATITUDE", d."LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;

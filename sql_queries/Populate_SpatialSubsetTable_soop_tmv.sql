@@ -39,5 +39,4 @@ FROM soop_tmv.soop_tmv_trajectory_data d, marvl3."500m_isobath" p, marvl3.source
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'soop_tmv_trajectory_data'
 AND EXTRACT(MINUTE FROM date_trunc('minute', d."TIME" AT TIME ZONE 'UTC')) IN (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55) -- only keep 1 sample every 5min
-GROUP BY s.source_id, d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC') -- at 10knots, 1min <=> ~300m (distance over which averaging is still sensible)
-ORDER BY d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'); -- at 10knots, 1min <=> ~300m (distance over which averaging is still sensible)
