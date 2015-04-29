@@ -35,7 +35,7 @@ d.temperature,
 d.salinity,
 '1',
 m.geom
-FROM wodb.uor_deployments m, marvl3."500m_isobath" p, source s
+FROM marvl3."500m_isobath" p, source s, wodb.uor_deployments m
 INNER JOIN wodb.uor_measurements d
 ON m."CAST_ID" = d.cast_id
 WHERE ST_CONTAINS(p.geom, m.geom)
