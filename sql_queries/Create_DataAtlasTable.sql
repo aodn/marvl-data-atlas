@@ -39,3 +39,8 @@ CREATE TABLE data_atlas (
 
 ALTER TABLE data_atlas 
 ADD CONSTRAINT data_atlas_pk PRIMARY KEY ("LONGITUDE", "LATITUDE", "TIME", "DEPTH");
+
+ALTER TABLE data_atlas
+ADD CONSTRAINT data_atlas_geom_check CHECK (st_isvalid(geom));
+
+CREATE INDEX data_atlas_gist_idx ON data_atlas USING gist (geom);
