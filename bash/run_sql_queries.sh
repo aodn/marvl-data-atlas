@@ -6,6 +6,7 @@
 cat ../sql_queries/CreatePopulate_SourceTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 
 # create and populate the table 500m_isobath
+echo "DROP TABLE IF EXISTS marvl3.\"500m_isobath\";" | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath" | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 
 # create the table spatial_subset
@@ -34,3 +35,5 @@ cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_mooring.sql | psql -h 
 cat ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+cat ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+cat ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
