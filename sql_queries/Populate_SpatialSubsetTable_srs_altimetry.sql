@@ -43,5 +43,4 @@ FROM srs_altimetry.measurements d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.schema_name = 'srs_altimetry'
 AND s.table_name = 'measurements'
-GROUP BY s.source_id, d.file_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom
-ORDER BY d.file_id, date_trunc('hour', d."TIME" AT TIME ZONE 'UTC');
+GROUP BY s.source_id, d.file_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
