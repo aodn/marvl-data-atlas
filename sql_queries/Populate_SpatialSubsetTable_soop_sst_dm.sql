@@ -25,7 +25,7 @@ d."LONGITUDE",
 d."LONGITUDE_quality_control",
 d."LATITUDE",
 d."LATITUDE_quality_control",
-d."TIME" AT TIME ZONE 'UTC' AS TIME,
+d."TIME" AT TIME ZONE 'UTC',
 d."TIME_quality_control",
 '0',
 '1'

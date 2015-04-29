@@ -23,11 +23,11 @@ SELECT
 s.source_id,
 d.file_id,
 d."LONGITUDE",
-"0",
+'1',
 d."LATITUDE",
-"0",
-d."TIME",
-"0",
+'1',
+d."TIME" AT TIME ZONE'UTC',
+'1',
 d."DEPTH",
 "0",
 d."TEMP",
@@ -35,7 +35,7 @@ d."TEMP",
 d."PSAL",
 "0",
 d.geom
-FROM auv.auv_trajectory_st_data d,  "500m_isobath" p,source s
+FROM auv.auv_trajectory_st_data d, "500m_isobath" p,source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name= 'auv_trajectory_st_data' 
 AND d."TIME" >= '1995-01-01' 

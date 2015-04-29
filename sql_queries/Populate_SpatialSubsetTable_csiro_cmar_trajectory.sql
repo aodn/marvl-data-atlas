@@ -25,7 +25,7 @@ d."LONGITUDE",
 '1',
 d."LATITUDE",
 '1',
-d."TIME" AT TIME ZONE 'UTC' AS TIME,
+d."TIME" AT TIME ZONE 'UTC',
 '1',
 -gsw_z_from_p(d."PRESSURE", d."LATITUDE")  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
 '0',
