@@ -26,17 +26,17 @@ d."LONGITUDE",
 '1',
 d."LATITUDE",
 '1',
-d."TIME" AT TIME ZONE'UTC',
+d."TIME" AT TIME ZONE 'UTC',
 '1',
 d."DEPTH",
-"0",
+'0',
 d."TEMP",
-"0",
+'0',
 d."PSAL",
-"0",
+'0',
 d.geom
 FROM auv.auv_trajectory_st_data d, "500m_isobath" p,source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name= 'auv_trajectory_st_data' 
 AND d."TIME" >= '1995-01-01' 
-AND d."TIME" < '2015-01-01'
+AND d."TIME" < '2015-01-01';

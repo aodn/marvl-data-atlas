@@ -39,5 +39,5 @@ WHERE ST_CONTAINS(p.geom,m.geom)
 AND s."SUBFACILITY" = 'SUR' 
 AND s.schema_name = 'wodb'
 AND d."TIME" >= '1995-01-01'
-AND d."TIME" < '2015-01-01'
+AND d."TIME" < '2015-01-01';
 

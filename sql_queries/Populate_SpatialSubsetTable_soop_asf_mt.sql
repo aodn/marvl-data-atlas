@@ -25,7 +25,7 @@ d."LONGITUDE",
 '1',
 d."LATITUDE",
 '1',
-d."TIME" AT TIME ZONE 'UTC' AS TIME,
+d."TIME" AT TIME ZONE 'UTC',
 '1',
 '0',
 '1',
@@ -39,4 +39,4 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND  s.table_name='soop_asf_mt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'	
-AND vessel_name NOT IN ('Southern Surveyor')		--SouthernS excluded from here as data from this vessel will be extracted from CSIRO_underway
+AND d.vessel_name NOT IN ('Southern Surveyor');		--SouthernS excluded from here as data from this vessel will be extracted from CSIRO_underway

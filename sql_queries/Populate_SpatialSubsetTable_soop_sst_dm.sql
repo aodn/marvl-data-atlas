@@ -38,4 +38,4 @@ FROM  soop_sst.soop_sst_dm_trajectory_data d, "500m_isobath" p,source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name='soop_sst_dm_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
-AND d."TIME" < '2015-01-01'	
+AND d."TIME" < '2015-01-01'	;

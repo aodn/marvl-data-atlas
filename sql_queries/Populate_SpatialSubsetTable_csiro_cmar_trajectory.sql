@@ -27,7 +27,7 @@ d."LATITUDE",
 '1',
 d."TIME" AT TIME ZONE 'UTC',
 '1',
--gsw_z_from_p(d."PRESSURE", d."LATITUDE")  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
+-gsw_z_from_p(d."PRESSURE", d."LATITUDE"),  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
 '0',
 d."TEMPERATURE",
 d."TEMPERATURE_QC",
@@ -38,4 +38,4 @@ FROM aodn_csiro_cmar.aodn_csiro_cmar_trajectory_data d, "500m_isobath" p, source
 WHERE ST_CONTAINS(p.geom, d.geom) 
 AND  s.table_name='aodn_csiro_cmar_trajectory_data'
 AND d."TIME" >= '1995-01-01'
-AND d."TIME" < '2015-01-01'
+AND d."TIME" < '2015-01-01';

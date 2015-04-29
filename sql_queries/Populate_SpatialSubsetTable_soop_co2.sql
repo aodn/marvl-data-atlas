@@ -40,6 +40,4 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name='soop_co2_trajectory_data' 
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'
-AND vessel_name IN('L''Astrolabe', 'Aurora Australis')	   
-
- 
+AND d.vessel_name IN('L''Astrolabe', 'Aurora Australis');	   
