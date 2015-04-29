@@ -62,7 +62,7 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
 # run all files
 for file in $SQL_FILES; do
 	echo "Running sql in '$file'"
-	psql_marvl $sql_file
+	psql_marvl $file
 done
 
 rm -f $tmp_psql_500m_isobath
