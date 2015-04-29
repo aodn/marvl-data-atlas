@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# need to create a role marvl3 and then a schema marvl3 in the harvest database
-
 # create and populate the table source
 cat ../sql_queries/CreatePopulate_SourceTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 
@@ -37,3 +35,6 @@ cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h 2-nec-hob.
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+
+# create the table data_atlas
+cat ../sql_queries/Create_DataAtlasTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
