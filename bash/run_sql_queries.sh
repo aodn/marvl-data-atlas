@@ -1,51 +1,68 @@
 #!/bin/bash
 
+DATABASE_HOST=2-nec-hob.emii.org.au
+DATABASE_NAME=harvest
+DATABASE_USERNAME=marvl3
+
+# Run psql in front of the harvest database
+# $1 - sql file to run
+psql_marvl() {
+	local sql_file=$1; shift
+	cat $sql_file | psql -h $DATABASE_HOST -d $DATABASE_NAME -U $DATABASE_USERNAME
+}
+
 # create and populate the table source
-cat ../sql_queries/CreatePopulate_SourceTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+SQL_FILES="$SQL_FILES ../sql_queries/CreatePopulate_SourceTable.sql"
 
 # create and populate the table 500m_isobath
-echo "DROP TABLE IF EXISTS marvl3.\"500m_isobath\";" | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath" | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+tmp_psql_500m_isobath=`mktemp`
+echo "DROP TABLE IF EXISTS marvl3.\"500m_isobath\";" > $tmp_psql_500m_isobath
+shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath" >> $tmp_psql_500m_isobath
+SQL_FILES="$SQL_FILES $tmp_psql_500m_isobath"
 
 # create the table spatial_subset
-cat ../sql_queries/Create_SpatialSubsetTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+SQL_FILES="$SQL_FILES ../sql_queries/Create_SpatialSubsetTable.sql"
 
 # create the function gsw_z_from_p
-cat ../sql_queries/CreateSeaWaterFunctions.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+SQL_FILES="$SQL_FILES ../sql_queries/CreateSeaWaterFunctions.sql"
 
 # populate the table spatial_subset
-cat ../sql_queries/Populate_SpatialSubsetTable_aatams_sattag_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_ctd_profiles.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_aodn_nt_sattag_hawksbill.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_argo.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_wodb_xbt.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_wodb_ctd.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_wodb_uor.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_ts.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_rt_meteo.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_rt_bio.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_am_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_burst_avg.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_dar_yon.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_faimms.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_srs_altimetry.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_mooring.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_wodb_sur.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_trajectory.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_underway.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_co2.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_sst_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_sst_nrt.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_soop_asf_mt.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_auv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aatams_sattag_dm.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_ctd_profiles.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aodn_nt_sattag_hawksbill.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_argo.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_wodb_xbt.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_wodb_ctd.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_wodb_uor.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_ts.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_rt_meteo.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_rt_bio.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_am_dm.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_burst_avg.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_dar_yon.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_faimms.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_srs_altimetry.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_mooring.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_wodb_sur.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_trajectory.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_underway.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_co2.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_sst_dm.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_sst_nrt.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_asf_mt.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_auv.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Create_DataAtlasTable.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
 
-# create the table data_atlas
-cat ../sql_queries/Create_DataAtlasTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+# run all files
+for file in $SQL_FILES; do
+	echo "Running sql in '$file'"
+	psql_marvl $sql_file
+done
 
-# populate the table data_atlas
-cat ../sql_queries/Populate_DataAtlasTable.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+rm -f $tmp_psql_500m_isobath
