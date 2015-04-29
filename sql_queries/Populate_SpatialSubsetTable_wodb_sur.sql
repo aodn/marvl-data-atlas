@@ -25,7 +25,7 @@ d.longitude,
 '0',
 d.latitude,
 '0',
-d.time timestamp with time zone as time,
+d.time AT TIME ZONE 'UTC',
 '0',
 d.depth,
 '0',
@@ -40,4 +40,3 @@ AND s."SUBFACILITY" = 'SUR'
 AND s.schema_name = 'wodb'
 AND d."TIME" >= '1995-01-01'
 AND d."TIME" < '2015-01-01';
-
