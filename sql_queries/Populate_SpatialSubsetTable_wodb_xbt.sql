@@ -35,7 +35,7 @@ d.temperature,
 NULL,
 NULL,
 m.geom
-FROM wodb.xbt_deployments m, marvl3."500m_isobath" p, marvl3.source s
+FROM marvl3."500m_isobath" p, marvl3.source s, wodb.xbt_deployments m
 INNER JOIN wodb.xbt_measurements d
 ON m."CAST_ID" = d.cast_id
 WHERE ST_CONTAINS(p.geom, m.geom)
