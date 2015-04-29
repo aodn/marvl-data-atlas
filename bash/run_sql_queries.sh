@@ -14,7 +14,6 @@ cat ../sql_queries/Create_SpatialSubsetTable.sql | psql -h 2-nec-hob.emii.org.au
 cat ../sql_queries/CreateSeaWaterFunctions.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 
 # populate the table spatial_subset
-<<<<<<< HEAD
 cat ../sql_queries/Populate_SpatialSubsetTable_aatams_sattag_dm.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_anmn_nrs_ctd_profiles.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_aodn_nt_sattag_hawksbill.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
@@ -32,9 +31,8 @@ cat ../sql_queries/Populate_SpatialSubsetTable_faimms.sql | psql -h 2-nec-hob.em
 cat ../sql_queries/Populate_SpatialSubsetTable_srs_altimetry.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_mooring.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_wodb_sur.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
-cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_trajectory.sql | psql -h po.aodn.org.au -d harvest -U admin
-cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_underway.sql | psql -h po.aodn.org.au -d harvest -U admin
-<<<<<<< HEAD
+cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_trajectory.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
+cat ../sql_queries/Populate_SpatialSubsetTable_csiro_cmar_underway.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_ran_sst.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_tmv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
 cat ../sql_queries/Populate_SpatialSubsetTable_soop_trv.sql | psql -h 2-nec-hob.emii.org.au -d harvest -U marvl3
