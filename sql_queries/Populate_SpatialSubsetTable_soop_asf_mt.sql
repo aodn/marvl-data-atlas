@@ -1,6 +1,6 @@
 SET SEARCH_PATH = marvl3, public;		
 ---SOOP_ASF_MT	
-\echo 'SOOP_TMV'		
+\echo 'SOOP_ASF_MT'		
 INSERT INTO marvl3.spatial_subset(
 source_id,
 origin_id,
@@ -22,13 +22,13 @@ SELECT
 s.source_id,
 d.cruise_id,
 d."LONGITUDE",
-'0',
+'1',
 d."LATITUDE",
+'1',
+d."TIME" AT TIME ZONE 'UTC' AS TIME,
+'1',
 '0',
-d."TIME",
-'0',
-'0',
-'0',
+'1',
 d."TEMP",
 '0',
 NULL,

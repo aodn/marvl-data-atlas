@@ -25,10 +25,10 @@ d."LONGITUDE",
 d."LONGITUDE_quality_control",
 d."LATITUDE",
 d."LATITUDE_quality_control",
-d."TIME",
+d."TIME" AT TIME ZONE 'UTC' AS TIME,
 d."TIME_quality_control",
 '0',
-'0'
+'1'
 d."TEMP",
 d."TEMP_quality_control",
 NULL,
