@@ -34,9 +34,9 @@ d.temperature,
 d.salinity,
 '0',
 d.geom
-FROM wodb.sur_measurement d, "500m_isobath" p,source s
+FROM wodb.sur_measurements d, "500m_isobath" p,source s
 WHERE ST_CONTAINS(p.geom,m.geom) 
 AND s."SUBFACILITY" = 'SUR' 
 AND s.schema_name = 'wodb'
-AND d."TIME" >= '1995-01-01'
-AND d."TIME" < '2015-01-01';
+AND d.time>= '1995-01-01'
+AND d.time < '2015-01-01';
