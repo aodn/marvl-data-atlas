@@ -1,7 +1,7 @@
  SET SEARCH_PATH = marvl3, public;               
 -- WODB SUR
 \echo 'WODB SUR'
-INSERT INTO marvl3.spatial_subset(
+INSERT INTO spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -22,11 +22,11 @@ SELECT
 s.source_id,
 d.cast_id,
 d.longitude,
-'0',
+'1',
 d.latitude,
-'0',
+'1',
 d.time AT TIME ZONE 'UTC',
-'0',
+'1',
 d.depth,
 '0',
 d.temperature,

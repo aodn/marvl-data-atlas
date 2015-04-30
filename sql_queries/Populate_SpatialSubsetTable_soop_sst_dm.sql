@@ -1,7 +1,7 @@
 SET SEARCH_PATH = marvl3, public;	
 ---SOOP-SST DM	
 \echo 'SOOP-SST DM'
-INSERT INTO marvl3.spatial_subset(
+INSERT INTO spatial_subset(
 source_id,
 origin_id,
 "LONGITUDE",
@@ -27,7 +27,7 @@ d."LATITUDE",
 d."LATITUDE_quality_control",
 d."TIME" AT TIME ZONE 'UTC',
 d."TIME_quality_control",
-'0',
+0,
 '1',
 d."TEMP",
 d."TEMP_quality_control",
@@ -36,6 +36,6 @@ NULL,
 d.geom
 FROM  soop_sst.soop_sst_dm_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
-AND s.table_name='soop_sst_dm_trajectory_data'
+AND s.table_name = 'soop_sst_dm_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01';
