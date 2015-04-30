@@ -175,5 +175,6 @@ FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PRES_REL'
-AND d."VALUES" >= 0 -- gsw_z_from_p cannot handle negative pressure (fair enough...)
+AND d."VALUES" >= 0
+AND d."VALUES" < 500 -- gsw_z_from_p cannot handle crazy pressure (fair enough...)
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
