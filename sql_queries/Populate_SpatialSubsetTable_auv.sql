@@ -37,6 +37,6 @@ d."PSAL",
 d.geom
 FROM auv.auv_trajectory_st_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
-AND s.table_name='auv_trajectory_st_data' 
+AND s.table_name = 'auv_trajectory_st_data' 
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01';
