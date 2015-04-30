@@ -27,7 +27,7 @@ INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', '', 'Velocity', 'timeSeriesProfi
 INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'DSTO', 'trajectory','aodn_dsto','aodn_dsto_trajectory_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'AODN', '', 'NT hawksbills', 'trajectoryProfile','aodn_nt_sattag_hawksbill','aodn_nt_sattag_hawksbill_profile_data','profile_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'Argo', '', '', 'trajectoryProfile','argo','profile_download','platform_number+cycle_number');
-INSERT INTO source (SELECT 'IMOS/AODN', 'AUV', '', '', 'trajectory','auv','auv_trajectory_b_data','file_id');
+INSERT INTO source (SELECT 'IMOS/AODN', 'AUV', '', '', 'trajectory','auv','auv_trajectory_st_data','file_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'FAIMMS', '', '', 'timeSeries','faimms','faimms_timeseries_data','channel_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'XBT', 'DM', 'profile','soop_xbt_dm','soop_xbt_dm_profile_data','profile_id');
 INSERT INTO source (SELECT 'IMOS/AODN', 'SOOP', 'CO2', '', 'trajectory','soop_co2','soop_co2_trajectory_data','cruise_id');

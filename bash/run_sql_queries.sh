@@ -56,6 +56,7 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_soop_asf_mt.sql
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_auv.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_final.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Create_DataAtlasTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
 
