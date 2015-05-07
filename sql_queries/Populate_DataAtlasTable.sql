@@ -45,11 +45,11 @@ min(CASE WHEN s."TEMP_QC" IN ('0', '1', '2') THEN s."TEMP" ELSE NULL END) AS "TE
 max(CASE WHEN s."TEMP_QC" IN ('0', '1', '2') THEN s."TEMP" ELSE NULL END) AS "TEMP_max",
 avg(CASE WHEN s."TEMP_QC" IN ('0', '1', '2') THEN s."TEMP" ELSE NULL END) AS "TEMP_mean",
 stddev(CASE WHEN s."TEMP_QC" IN ('0', '1', '2') THEN s."TEMP" ELSE NULL END) AS "TEMP_stddev",
-count(CASE WHEN s."PSAL_QC" IN ('0', '1', '2') THEN s."PSAL" ELSE NULL END) AS "PSAL_n",
-min(CASE WHEN s."PSAL_QC" IN ('0', '1', '2') THEN s."PSAL" ELSE NULL END) AS "PSAL_min",
-max(CASE WHEN s."PSAL_QC" IN ('0', '1', '2') THEN s."PSAL" ELSE NULL END) AS "PSAL_max",
-avg(CASE WHEN s."PSAL_QC" IN ('0', '1', '2') THEN s."PSAL" ELSE NULL END) AS "PSAL_mean",
-stddev(CASE WHEN s."PSAL_QC" IN ('0', '1', '2') THEN s."PSAL" ELSE NULL END) AS "PSAL_stddev",
+count(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_n", -- checking for TEMP_QC is part of the salinity QC test (if TEMP is not good then PSAL must be not good)
+min(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_min",
+max(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_max",
+avg(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_mean",
+stddev(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_stddev",
 ST_GeometryFromText(COALESCE('POLYGON(('||(width_bucket(s."LONGITUDE", 110.875, 155.125, 181)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 169)-1)*-0.25-2.875||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 181)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 169)-1)*-0.25-3.125||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 181)-1)*0.25+110.875||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 169)-1)*-0.25-3.125||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 181)-1)*0.25+110.875||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 169)-1)*-0.25-2.875||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 181)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 169)-1)*-0.25-2.875||'))'), '4326')
 FROM marvl3.spatial_subset s
 WHERE "LONGITUDE_QC" IN ('0', '1', '2') -- measurements with time and space location QC flags no good are not considered
@@ -59,6 +59,12 @@ AND (
 "NOMINAL_DEPTH_QC" IN ('0', '1', '2')
 OR "DEPTH_QC" IN ('0', '1', '2')
 )
+AND s."TIME" AT TIME ZONE 'UTC' BETWEEN '1995-01-01' AND to_char(now() AT TIME ZONE 'UTC', 'YYYY-MM-DD') -- impossible time QC test
+AND s."LONGITUDE" BETWEEN 111 AND 155 -- impossible location QC test
+AND s."LATITUDE" BETWEEN -3 AND -45
+AND s."TEMP" BETWEEN -2.5 AND 40 -- global range QC test (ARGO thresholds)
+AND s."PSAL" BETWEEN 2 AND 41
+AND s."DEPTH" BETWEEN -5 AND 500
 GROUP BY width_bucket(s."LONGITUDE", 110.875, 155.125, 181), -- elements in same temporal and spatial buckets are grouped
 width_bucket(s."LATITUDE", -2.875, -45.125, 169),
 date_trunc('quarter', s."TIME" AT TIME ZONE 'UTC'),
