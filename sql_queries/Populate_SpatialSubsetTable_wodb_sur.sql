@@ -28,11 +28,11 @@ d.latitude,
 d.time AT TIME ZONE 'UTC',
 '1',
 d.depth,
-'0',
-d.temperature,
-'0',
-d.salinity,
-'0',
+'1',
+CASE WHEN d.temperature = 999999 THEN NULL ELSE d.temperature END,
+CASE WHEN d.temperature = 999999 THEN '9' ELSE '1' END,
+CASE WHEN d.salinity = 999999 THEN NULL ELSE d.salinity END,
+CASE WHEN d.salinity = 999999 THEN '9' ELSE '1' END,
 d.geom
 FROM wodb.sur_measurements d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom) 

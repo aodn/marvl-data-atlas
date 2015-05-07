@@ -30,10 +30,10 @@ m."TIME",
 '1',
 d.depth,
 '1',
-d.temperature,
-'1',
-d.salinity,
-'1',
+CASE WHEN d.temperature = 999999 THEN NULL ELSE d.temperature END,
+CASE WHEN d.temperature = 999999 THEN '9' ELSE '1' END,
+CASE WHEN d.salinity = 999999 THEN NULL ELSE d.salinity END,
+CASE WHEN d.salinity = 999999 THEN '9' ELSE '1' END,
 m.geom
 FROM marvl3."500m_isobath" p, marvl3.source s, wodb.ctd_deployments m
 INNER JOIN wodb.ctd_measurements d 
