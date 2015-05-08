@@ -26,13 +26,7 @@ avg(d."LONGITUDE"),
 avg(d."LATITUDE"),
 '1',
 date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'),
-CASE
-	WHEN max(d."TIME_QC_FLAG") BETWEEN 0 AND 63 THEN '1'
-	WHEN max(d."TIME_QC_FLAG") BETWEEN 64 AND 127 THEN '3'
-	WHEN max(d."TIME_QC_FLAG") BETWEEN 128 AND 191 THEN '4'
-	WHEN max(d."TIME_QC_FLAG") BETWEEN 192 AND 255 THEN '0'
-	ELSE '4'
-END,
+'1',
 -gsw_z_from_p(avg(d."PRESSURE"), avg(d."LATITUDE")),  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
 CASE
 	WHEN max(d."PRESSURE_QC_FLAG") BETWEEN 0 AND 63 THEN '1'
