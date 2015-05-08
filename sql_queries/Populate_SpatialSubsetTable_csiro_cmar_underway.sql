@@ -26,13 +26,31 @@ max(d."POSITION_QC"),
 avg(d."LATITUDE"),
 max(d."POSITION_QC"),
 date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'),
-'1',
+CASE
+	WHEN max(d."TIME_QC_FLAG") BETWEEN 0 AND 63 THEN '1'
+	WHEN max(d."TIME_QC_FLAG") BETWEEN 64 AND 127 THEN '3'
+	WHEN max(d."TIME_QC_FLAG") BETWEEN 128 AND 191 THEN '4'
+	WHEN max(d."TIME_QC_FLAG") BETWEEN 192 AND 255 THEN '0'
+	ELSE '4'
+END,
 0,
 '1',
 avg(d."SEA_SURFACE_TEMP"),
-max(d."SEA_SURFACE_TEMP_QC"),
+CASE
+	WHEN max(d."TEMPERATURE_QC_FLAG") BETWEEN 0 AND 63 THEN '1'
+	WHEN max(d."TEMPERATURE_QC_FLAG") BETWEEN 64 AND 127 THEN '3'
+	WHEN max(d."TEMPERATURE_QC_FLAG") BETWEEN 128 AND 191 THEN '4'
+	WHEN max(d."TEMPERATURE_QC_FLAG") BETWEEN 192 AND 255 THEN '0'
+	ELSE '4'
+END,
 avg(d."SALINITY"),
-max(d."SALINITY_QC"),
+CASE
+	WHEN max(d."SALINITY_QC_FLAG") BETWEEN 0 AND 63 THEN '1'
+	WHEN max(d."SALINITY_QC_FLAG") BETWEEN 64 AND 127 THEN '3'
+	WHEN max(d."SALINITY_QC_FLAG") BETWEEN 128 AND 191 THEN '4'
+	WHEN max(d."SALINITY_QC_FLAG") BETWEEN 192 AND 255 THEN '0'
+	ELSE '4'
+END,
 ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE")||')'), '4326') -- geom is re-created from averaged positions over 1min
 FROM aodn_csiro_cmar.aodn_csiro_cmar_underway_data d, marvl3."500m_isobath" p, marvl3.source s
 WHERE ST_CONTAINS(p.geom, d.geom)
