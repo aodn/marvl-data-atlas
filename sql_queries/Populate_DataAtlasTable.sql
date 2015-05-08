@@ -62,9 +62,9 @@ OR "DEPTH_QC" IN ('0', '1', '2')
 AND s."TIME" BETWEEN '1995-01-01' AND now() -- impossible time QC test
 AND s."LONGITUDE" BETWEEN 111 AND 155 -- impossible location QC test
 AND s."LATITUDE" BETWEEN -45 AND -3
-AND s."TEMP" BETWEEN -2.5 AND 40 -- global range QC test (ARGO thresholds)
-AND s."PSAL" BETWEEN 2 AND 41
 AND s."DEPTH" BETWEEN -5 AND 500
+AND (s."TEMP" BETWEEN -2.5 AND 40 -- global range QC test (ARGO thresholds)
+OR s."PSAL" BETWEEN 2 AND 41)
 GROUP BY width_bucket(s."LONGITUDE", 110.875, 155.125, 176), -- elements in same temporal and spatial buckets are grouped
 width_bucket(s."LATITUDE", -2.875, -45.125, 168),
 date_trunc('quarter', s."TIME" AT TIME ZONE 'UTC'),
