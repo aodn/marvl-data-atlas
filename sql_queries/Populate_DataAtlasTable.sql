@@ -52,7 +52,11 @@ avg(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')
 stddev(CASE WHEN (s."PSAL_QC" IN ('0', '1', '2') AND s."TEMP_QC" IN ('0', '1', '2')) THEN s."PSAL" ELSE NULL END) AS "PSAL_stddev",
 ST_GeometryFromText(COALESCE('POLYGON(('||(width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-2.875||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-3.125||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+110.875||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-3.125||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+110.875||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-2.875||', '||(width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+111.125||' '||(width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-2.875||'))'), '4326')
 FROM marvl3.spatial_subset s
-WHERE "LONGITUDE_QC" IN ('0', '1', '2') -- measurements with time and space location QC flags no good are not considered
+INNER JOIN marvl3.bathy_atlas b
+ON (width_bucket(s."LONGITUDE", 110.875, 155.125, 176)-1)*0.25+111 = b."LONGITUDE"
+AND (width_bucket(s."LATITUDE", -2.875, -45.125, 168)-1)*-0.25-3 = b."LATITUDE"
+WHERE (width_bucket(CASE WHEN "DEPTH_QC" IN ('0', '1', '2') THEN s."DEPTH" ELSE s."NOMINAL_DEPTH" END, -5, 505, 51)-1)*10 < b."DEPTH"
+AND "LONGITUDE_QC" IN ('0', '1', '2') -- measurements with time and space location QC flags no good are not considered
 AND "LATITUDE_QC" IN ('0', '1', '2')
 AND "TIME_QC" IN ('0', '1', '2')
 AND (
