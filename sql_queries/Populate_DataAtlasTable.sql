@@ -1,7 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
 -- data_atlas
--- \echo 'data_atlas'
+\echo 'data_atlas'
 INSERT INTO data_atlas (
 "LONGITUDE",
 "LONGITUDE_bound_min",
