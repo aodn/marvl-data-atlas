@@ -39,8 +39,9 @@ max(d."VALUES_quality_control"),
 NULL,
 NULL,
 d.geom
-FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM anmn_nrs_dar_yon.anmn_nrs_yon_dar_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'anmn_nrs_yon_dar_timeseries_data'
 AND d."VARNAME" = 'TEMP'
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;

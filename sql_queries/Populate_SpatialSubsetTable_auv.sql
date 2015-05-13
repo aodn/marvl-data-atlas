@@ -35,8 +35,9 @@ d."TEMP",
 d."PSAL",
 '0',
 d.geom
-FROM auv.auv_trajectory_st_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM auv.auv_trajectory_st_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'auv_trajectory_st_data' 
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01';

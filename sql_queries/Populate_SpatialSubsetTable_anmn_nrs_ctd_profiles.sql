@@ -35,8 +35,9 @@ d."TEMP_quality_control",
 d."PSAL",
 d."PSAL_quality_control",
 d.geom
-FROM anmn_nrs_ctd_profiles.anmn_nrs_ctd_profiles_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM anmn_nrs_ctd_profiles.anmn_nrs_ctd_profiles_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'anmn_nrs_ctd_profiles_data'
 AND d."TIME" >= '1995-01-01'
 AND d."TIME" < '2015-01-01';

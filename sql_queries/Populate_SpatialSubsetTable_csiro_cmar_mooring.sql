@@ -63,7 +63,8 @@ CASE
 	ELSE '4'
 END,
 d.geom
-FROM aodn_csiro_cmar.aodn_csiro_cmar_mooring_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM aodn_csiro_cmar.aodn_csiro_cmar_mooring_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'aodn_csiro_cmar_mooring_data'
 GROUP BY s.source_id, COALESCE(d."SURVEY_ID"||'+'||d."SERIAL_NO"), d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;

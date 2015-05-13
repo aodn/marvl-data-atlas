@@ -34,8 +34,9 @@ d."TEMP",
 NULL,
 NULL,
 d.geom
-FROM soop_asf_mt.soop_asf_mt_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s 
+FROM soop_asf_mt.soop_asf_mt_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'soop_asf_mt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'	

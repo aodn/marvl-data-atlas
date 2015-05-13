@@ -46,8 +46,9 @@ CASE
 	ELSE '4'
 END,
 ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE")||')'), '4326') -- geom is re-created from averaged positions over 1min
-FROM aodn_csiro_cmar.aodn_csiro_cmar_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
-WHERE ST_CONTAINS(p.geom, d.geom) 
+FROM aodn_csiro_cmar.aodn_csiro_cmar_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'aodn_csiro_cmar_trajectory_data'
 AND d."TIME" >= '1995-01-01'
 AND d."TIME" < '2015-01-01'

@@ -35,7 +35,8 @@ max(d."TEMP_quality_control"),
 avg(d."PSAL"),
 max(d."PSAL_quality_control"),
 d.geom
-FROM anmn_am_dm.anmn_am_dm_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM anmn_am_dm.anmn_am_dm_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'anmn_am_dm_data'
 GROUP BY s.source_id, d.file_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
