@@ -21,7 +21,7 @@ shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath"
 SQL_FILES="$SQL_FILES $tmp_psql_500m_isobath"
 
 # create and populate the table australian_continent
-tmp_psql_australian_continent=`mktemp2`
+tmp_psql_australian_continent=`mktemp`
 echo "DROP TABLE IF EXISTS marvl3.\"australian_continent\";" > $tmp_psql_australian_continent
 shp2pgsql -s 4326 ../AustralianContinent_Shapefile/australian_continent.sh marvl3."australian_continent" >> $tmp_psql_australian_continent
 SQL_FILES="$SQL_FILES $tmp_psql_australian_continent"
