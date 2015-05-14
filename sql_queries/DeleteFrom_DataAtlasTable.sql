@@ -9,4 +9,4 @@ FROM data_atlas s
 INNER JOIN bathy_atlas b
 ON s."LONGITUDE" = b."LONGITUDE"
 AND s."LATITUDE" = b."LATITUDE"
-WHERE s."DEPTH" * (-1) < b."DEPTH");
+WHERE s."DEPTH" > b."DEPTH");
