@@ -21,12 +21,12 @@ geom
 )
 SELECT
 s.source_id,
-m."Station",
-m."Longitude",
+d."Station",
+d."Longitude",
 '1',
-m."Latitude",
+d."Latitude",
 '1',
-m."Time" AT TIME ZONE 'UTC',
+d."Time" AT TIME ZONE 'UTC',
 '1',
 d."Depth",
 '1',
@@ -34,12 +34,10 @@ d."Temp",
 '0',
 d."Salinity",
 '0',
-m.geom
-FROM marvl3."500m_isobath" p, marvl3.source s, aodn_aims_ctd.aodn_aims_ctd_map m, marvl3."australian_continent" pp
-INNER JOIN  aodn_aims_ctd.aodn_aims_ctd_data d
-ON m."Station" = d."Station"
+d.geom
+FROM marvl3."500m_isobath" p, marvl3.source s, aodn_aims_ctd.aodn_aims_ctd_data d, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.schema_name = 'aodn_aims_ctd'
-AND m."Time" >= '1995-01-01'
-AND m."Time" < '2015-01-01';
+AND d."Time" >= '1995-01-01'
+AND d."Time" < '2015-01-01';
