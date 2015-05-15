@@ -28,8 +28,7 @@ WHERE "NOMINAL_DEPTH" = FLOAT8 'NaN';
 -- delete useless entries
 DELETE FROM spatial_subset
 WHERE "TEMP" IS NULL
-AND "PSAL" IS NULL
-AND "DEPTH" IS NULL;
+AND "PSAL" IS NULL;
 
 DELETE FROM spatial_subset
 WHERE "LATITUDE" IS NULL
