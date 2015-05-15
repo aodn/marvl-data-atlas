@@ -83,3 +83,4 @@ for file in $SQL_FILES; do
 done
 
 rm -f $tmp_psql_500m_isobath
+rm -f $tmp_psql_australian_continent
