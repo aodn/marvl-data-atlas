@@ -57,6 +57,7 @@ INSERT INTO source (SELECT 'WODB', '', 'PFL', '', 'trajectoryProfile','wodb','',
 INSERT INTO source (SELECT 'WODB', '', 'SUR', '', 'trajectory','wodb','','');
 INSERT INTO source (SELECT 'WODB', '', 'UOR', '', 'trajectory','wodb','uor_measurements','cast_id');
 INSERT INTO source (SELECT 'WODB', '', 'XBT', '', 'profile','wodb','xbt_measurements','cast_id');
+INSERT INTO source (SELECT 'IMOS/AODN','AIMS','CTD','','profile','aodn_aims_ctd','aodn_aims_ctd_data','Station');
 
 ALTER TABLE source ADD COLUMN source_id bigserial;
 ALTER TABLE source ADD PRIMARY KEY (source_id);
