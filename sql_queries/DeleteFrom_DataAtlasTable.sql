@@ -1,5 +1,11 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
+--delete entries where we don't have any data
+\echo 'delete entries where we dont have any data'
+DELETE FROM data_atlas
+WHERE "TEMP_n" = 0
+AND "PSAL_n" = 0;
+
 -- delete_bins_from_data_atlas_based_on_bathy
 \echo 'delete_bins_from_data_atlas_based_on_bathy'
 DELETE FROM data_atlas s
