@@ -35,7 +35,8 @@ max(d."TEMP_quality_control"),
 avg(d."PSAL"),
 max(d."PSAL_quality_control"),
 d.geom
-FROM anmn_nrs_rt_bio.anmn_nrs_rt_bio_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM anmn_nrs_rt_bio.anmn_nrs_rt_bio_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'anmn_nrs_rt_bio_timeseries_data'
 GROUP BY s.source_id, d.timeseries_id, d."LONGITUDE", d."LONGITUDE_quality_control", d."LATITUDE", d."LATITUDE_quality_control", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;

@@ -35,8 +35,9 @@ NULL,
 d."PSAL",
 d."PSAL_quality_control",
 d.geom
-FROM soop_co2.soop_co2_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
-WHERE ST_CONTAINS(p.geom, d.geom) 
+FROM soop_co2.soop_co2_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'soop_co2_trajectory_data' 
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'

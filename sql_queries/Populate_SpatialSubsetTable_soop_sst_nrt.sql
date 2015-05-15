@@ -33,8 +33,9 @@ CASE WHEN d."TEMP_quality_control"='Z' THEN '1' ELSE '3' END AS "TEMP_quality_co
 NULL,
 NULL,
 d.geom
-FROM soop_sst.soop_sst_nrt_trajectory_data d, marvl3."500m_isobath" p,marvl3.source s
-WHERE ST_CONTAINS(p.geom, d.geom) 
+FROM soop_sst.soop_sst_nrt_trajectory_data d, marvl3."500m_isobath" p,marvl3.source s, marvl3."australian_continent" pp
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'soop_sst_nrt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'

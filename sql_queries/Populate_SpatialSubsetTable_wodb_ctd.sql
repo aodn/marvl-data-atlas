@@ -35,10 +35,11 @@ CASE WHEN d.temperature = 999999 THEN '9' ELSE '1' END,
 CASE WHEN d.salinity = 999999 THEN NULL ELSE d.salinity END,
 CASE WHEN d.salinity = 999999 THEN '9' ELSE '1' END,
 m.geom
-FROM marvl3."500m_isobath" p, marvl3.source s, wodb.ctd_deployments m
+FROM marvl3."500m_isobath" p, marvl3.source s, wodb.ctd_deployments m, marvl3."australian_continent" pp
 INNER JOIN wodb.ctd_measurements d 
 ON m."CAST_ID" = d.cast_id
-WHERE ST_CONTAINS(p.geom, m.geom)
+WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s."SUBFACILITY" = 'CTD'
 AND s.schema_name = 'wodb'
 AND m."TIME" >= '1995-01-01'

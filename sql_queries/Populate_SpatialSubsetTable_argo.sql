@@ -35,8 +35,9 @@ d.temp_adjusted_qc,
 d.psal_adjusted,
 d.psal_adjusted_qc,
 d."position"
-FROM argo.profile_download d, marvl3."500m_isobath" p, marvl3.source s
+FROM argo.profile_download d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d."position")
+AND ST_CONTAINS(pp.geom, d."position") = FALSE
 AND s.table_name = 'profile_download'
 AND d.juld >= '1995-01-01'
 AND d.juld < '2015-01-01';

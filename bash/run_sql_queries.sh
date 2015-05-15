@@ -20,6 +20,12 @@ echo "DROP TABLE IF EXISTS marvl3.\"500m_isobath\";" > $tmp_psql_500m_isobath
 shp2pgsql -s 4326 ../500mIsobath_Shapefile/polygon_500m.sh marvl3."500m_isobath" >> $tmp_psql_500m_isobath
 SQL_FILES="$SQL_FILES $tmp_psql_500m_isobath"
 
+# create and populate the table australian_continent
+tmp_psql_australian_continent=`mktemp`
+echo "DROP TABLE IF EXISTS marvl3.\"australian_continent\";" > $tmp_psql_australian_continent
+shp2pgsql -s 4326 ../AustralianContinent_Shapefile/australian_continent.sh marvl3."australian_continent" >> $tmp_psql_australian_continent
+SQL_FILES="$SQL_FILES $tmp_psql_australian_continent"
+
 # create the table spatial_subset
 SQL_FILES="$SQL_FILES ../sql_queries/Create_SpatialSubsetTable.sql"
 
@@ -57,10 +63,17 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_anfog_dm.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aodn_dsto.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_auv.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_final.sql"
+
+# create and populate the table bathy_atlas
 SQL_FILES="$SQL_FILES ../sql_queries/Create_BathyAtlasTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_BathyAtlasTable.sql"
+
+# create and populate the table data_atlas
 SQL_FILES="$SQL_FILES ../sql_queries/Create_DataAtlasTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
+
+# delete rows in the table data_atlas that are deeper than the seafloor
+SQL_FILES="$SQL_FILES ../sql_queries/DeleteFrom_DataAtlasTable.sql"
 
 # run all files
 for file in $SQL_FILES; do

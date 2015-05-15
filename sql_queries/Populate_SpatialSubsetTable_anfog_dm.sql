@@ -35,7 +35,8 @@ max(replace(replace(d."TEMP_quality_control", '8', '2'), '9', '')),
 avg(CASE WHEN d."PSAL_quality_control" = '9' THEN NULL ELSE d."PSAL" END),
 max(replace(replace(d."PSAL_quality_control", '8', '2'), '9', '')),
 ST_GeometryFromText(COALESCE('POINT('||avg(CASE WHEN d."LONGITUDE_quality_control" = '9' THEN NULL ELSE d."LONGITUDE" END)||' '||avg(CASE WHEN d."LATITUDE_quality_control" = '9' THEN NULL ELSE d."LATITUDE" END)||')'), '4326') -- geom is re-created from averaged positions
-FROM anfog_dm.anfog_dm_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM anfog_dm.anfog_dm_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'anfog_dm_trajectory_data'
 GROUP BY s.source_id, d.file_id, date_trunc('minute', CASE WHEN d."TIME_quality_control" = '9' THEN NULL ELSE d."TIME" AT TIME ZONE 'UTC'END), width_bucket(CASE WHEN d."DEPTH" IS NOT NULL THEN CASE WHEN d."DEPTH_quality_control" = '9' THEN NULL ELSE d."DEPTH" END ELSE -gsw_z_from_p(CASE WHEN d."PRES_quality_control" = '9' THEN NULL ELSE d."PRES" END, CASE WHEN d."LATITUDE_quality_control" = '9' THEN NULL ELSE d."LATITUDE" END) END, -2.5, 502.5, 101);

@@ -39,8 +39,9 @@ max(d."VALUES_quality_control"),
 NULL,
 NULL,
 d.geom
-FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'TEMP'
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
@@ -83,8 +84,9 @@ NULL,
 avg(d."VALUES"),
 max(d."VALUES_quality_control"),
 d.geom
-FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PSAL'
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
@@ -127,8 +129,9 @@ NULL,
 NULL,
 NULL,
 d.geom
-FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'DEPTH'
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
@@ -171,8 +174,9 @@ NULL,
 NULL,
 NULL,
 d.geom
-FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s
+FROM faimms.faimms_timeseries_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
+AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PRES_REL'
 AND d."VALUES" >= 0
