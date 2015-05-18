@@ -10,7 +10,9 @@ CREATE TABLE source (
 	schema_name text,
 	table_name text,
 	ref_column text,
-	preprocessing text
+	preprocessing text,
+	n_deployments integer,
+	n_measurements integer
 );
 
 INSERT INTO source (SELECT 'IMOS/AODN', 'AATAMS', 'SATTAG', 'DM', 'trajectoryProfile', 'aatams_sattag_dm', 'aatams_sattag_dm_profile_data','profile_id','');
