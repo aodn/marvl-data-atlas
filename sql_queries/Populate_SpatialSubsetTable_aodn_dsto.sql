@@ -38,5 +38,5 @@ ST_GeometryFromText(COALESCE('POINT('||avg(d."LONGITUDE")||' '||avg(d."LATITUDE"
 FROM aodn_dsto.aodn_dsto_trajectory_data d, marvl3."500m_isobath" p, marvl3.source s, marvl3."australian_continent" pp
 WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
-AND s.table_name = 'anfog_dm_trajectory_data'
+AND s.table_name = 'aodn_dsto_trajectory_data'
 GROUP BY s.source_id, d.file_id, date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'), width_bucket(CASE WHEN d."DEPTH" IS NOT NULL THEN d."DEPTH" ELSE -gsw_z_from_p(d."PRES", d."LATITUDE") END, -2.5, 502.5, 101);
