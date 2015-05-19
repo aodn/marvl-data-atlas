@@ -44,7 +44,7 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'TEMP'
-AND d."VALUES_quality_control" > 0 -- we don't want to consider non QC'd data since the risk of bad data is high
+AND d."VALUES_quality_control" NOT IN ('0') -- we don't want to consider non QC'd data since the risk
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS PSAL timeSeries'
@@ -90,7 +90,7 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PSAL'
-AND d."VALUES_quality_control" > 0 -- we don't want to consider non QC'd data since the risk of bad data is high
+AND d."VALUES_quality_control" NOT IN ('0') -- we don't want to consider non QC'd data since the risk
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS DEPTH timeSeries'
@@ -136,7 +136,7 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'DEPTH'
-AND d."VALUES_quality_control" > 0 -- we don't want to consider non QC'd data since the risk of bad data is high
+AND d."VALUES_quality_control" NOT IN ('0') -- we don't want to consider non QC'd data since the risk of bad data is high
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
 
 \echo 'FAIMMS PRES_REL timeSeries'
@@ -184,5 +184,5 @@ AND s.table_name = 'faimms_timeseries_data'
 AND d."VARNAME" = 'PRES_REL'
 AND d."VALUES" >= 0
 AND d."VALUES" < 500 -- gsw_z_from_p cannot handle crazy pressure (fair enough...)
-AND d."VALUES_quality_control" > 0 -- we don't want to consider non QC'd data since the risk of bad data is high
+AND d."VALUES_quality_control" NOT IN ('0') -- we don't want to consider non QC'd data since the risk
 GROUP BY s.source_id, d.channel_id, d."LONGITUDE", d."LATITUDE", date_trunc('hour', d."TIME" AT TIME ZONE 'UTC'), d.geom;
