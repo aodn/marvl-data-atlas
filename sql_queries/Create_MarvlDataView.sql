@@ -24,5 +24,5 @@ SELECT measurement_id,
 	"PSAL_QC",
 	geom
 	FROM spatial_subset_filtered
-	ORDER BY feature_type_id, "TIME", "NOMINAL_DEPTH", "DEPTH"
+	ORDER BY feature_type_id, "TIME", "NOMINAL_DEPTH", "DEPTH", "LATITUDE", "LONGITUDE"
 );

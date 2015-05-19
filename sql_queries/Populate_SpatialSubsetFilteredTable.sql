@@ -48,7 +48,7 @@ CASE WHEN (d."PSAL_QC" IN ('0', '1', '2') AND d."PSAL" BETWEEN 2 AND 41 AND d."T
 CASE WHEN (d."PSAL_QC" IN ('0', '1', '2') AND d."PSAL" BETWEEN 2 AND 41 AND d."TEMP_QC" IN ('0', '1', '2')) THEN d."PSAL_QC" ELSE NULL END, -- global range QC test (ARGO thresholds)
 d.geom
 FROM spatial_subset d
-LEFT JOIN marvl3.source s 
+INNER JOIN marvl3.source s 
 ON s.source_id = d.source_id
 WHERE d."LONGITUDE_QC" IN ('0', '1', '2') -- measurements with time and space location QC flags no good are not considered
 AND d."LATITUDE_QC" IN ('0', '1', '2')
