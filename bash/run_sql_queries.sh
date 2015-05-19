@@ -76,6 +76,9 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
 # delete rows in the table data_atlas that are deeper than the seafloor
 SQL_FILES="$SQL_FILES ../sql_queries/DeleteFrom_DataAtlasTable.sql"
 
+# update source table to have an inventory of the data in the data atlas.
+SQL_FILES="$SQL_FILES ../sql_queries/Update_SourceTableDataInventory.sql"
+
 # run all files
 for file in $SQL_FILES; do
 	echo "Running sql in '$file'"
