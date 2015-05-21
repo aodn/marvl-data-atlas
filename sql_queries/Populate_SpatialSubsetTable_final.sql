@@ -1,5 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
+\echo 'Final clean up'
+
 -- need to convert NaNs to NULLs
 UPDATE spatial_subset
 SET "LATITUDE" = NULL
