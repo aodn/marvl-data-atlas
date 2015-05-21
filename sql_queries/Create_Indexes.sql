@@ -10,7 +10,7 @@ DROP INDEX IF EXISTS spatial_subset_filtered_idx;
 CREATE INDEX spatial_subset_filtered_idx
   ON marvl3.spatial_subset_filtered
   USING btree
-  (feature_type_id COLLATE pg_catalog."default", timezone('UTC'::text, "TIME"), "NOMINAL_DEPTH", "DEPTH", "LATITUDE", "LONGITUDE");
+  (feature_instance_id COLLATE pg_catalog."default", timezone('UTC'::text, "TIME"), "NOMINAL_DEPTH", "DEPTH", "LATITUDE", "LONGITUDE");
 
 DROP INDEX IF EXISTS spatial_subset_filtered_gist_idx;
 CREATE INDEX spatial_subset_filtered_gist_idx
