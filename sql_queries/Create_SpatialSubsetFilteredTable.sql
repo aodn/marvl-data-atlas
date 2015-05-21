@@ -3,7 +3,8 @@
 DROP TABLE IF EXISTS spatial_subset_filtered;
 CREATE TABLE spatial_subset_filtered (
 	measurement_id integer,
-	feature_type_id text,
+	feature_instance_id text,
+	collection_id integer,
 	"ORGANISATION" text,
 	"FACILITY" text,
 	"SUBFACILITY" text,

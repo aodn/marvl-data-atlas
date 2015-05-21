@@ -3,7 +3,7 @@
 DROP VIEW IF EXISTS marvl3_data;
 CREATE VIEW marvl3_data AS (
 SELECT measurement_id,
-	feature_type_id,
+	feature_instance_id,
 	"ORGANISATION",
 	"FACILITY",
 	"SUBFACILITY",
