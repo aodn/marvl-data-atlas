@@ -1,7 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
 --delete entries where we don't have any data
-\echo 'delete entries where we dont have any data'
+\echo 'delete entries from spatial_subset_filtered where we dont have any data'
 DELETE FROM spatial_subset_filtered
 WHERE "TEMP" IS NULL
 AND "PSAL" IS NULL;

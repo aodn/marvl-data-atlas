@@ -1,7 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
 -- spatial_subset_filtered
--- \echo 'spatial_subset_filtered'
+\echo 'spatial_subset_filtered'
 INSERT INTO spatial_subset_filtered (
 measurement_id,
 feature_type_id,
