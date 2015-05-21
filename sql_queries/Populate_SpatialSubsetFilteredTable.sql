@@ -4,7 +4,8 @@
 \echo 'spatial_subset_filtered'
 INSERT INTO spatial_subset_filtered (
 measurement_id,
-feature_type_id,
+feature_instance_id,
+collection_id,
 "ORGANISATION",
 "FACILITY",
 "SUBFACILITY",
@@ -28,6 +29,7 @@ geom
 SELECT 
 d.pkid,
 d.origin_id,
+s.source_id,
 s."ORGANISATION",
 s."FACILITY",
 s."SUBFACILITY",
