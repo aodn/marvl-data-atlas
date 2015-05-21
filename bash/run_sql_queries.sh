@@ -85,6 +85,9 @@ SQL_FILES="$SQL_FILES ../sql_queries/Create_Indexes.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/DeleteFrom_DataAtlasTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/DeleteFrom_SpatialSubsetFilteredTable.sql"
 
+# update source table to have an inventory of the data in the data atlas.
+SQL_FILES="$SQL_FILES ../sql_queries/Update_SourceTableDataInventory.sql"
+
 # run all files
 for file in $SQL_FILES; do
 	echo "Running sql in '$file'"
