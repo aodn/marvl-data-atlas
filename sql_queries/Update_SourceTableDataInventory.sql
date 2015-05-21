@@ -6,7 +6,7 @@ WITH a AS (SELECT
 m.source_id,
 count(distinct m.origin_id) AS n_deployments,
 count(*) AS n_measurements
-FROM marvl3.spatial_subset m 
+FROM marvl3.spatial_subset_filtered m 
 GROUP BY m.source_id)
 
 UPDATE marvl3.source s
