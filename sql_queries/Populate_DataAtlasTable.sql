@@ -62,7 +62,10 @@ OR "DEPTH_QC" IN ('0', '1', '2')
 AND s."TIME" BETWEEN '1995-01-01' AND now() -- impossible time QC test
 AND s."LONGITUDE" BETWEEN 111 AND 155 -- impossible location QC test
 AND s."LATITUDE" BETWEEN -45 AND -3
-AND s."DEPTH" BETWEEN -5 AND 500
+AND (
+d."DEPTH" BETWEEN -5 AND 505
+OR d."NOMINAL_DEPTH" BETWEEN -5 AND 505
+)
 GROUP BY width_bucket(s."LONGITUDE", 110.875, 155.125, 177), -- elements in same temporal and spatial buckets are grouped
 width_bucket(s."LATITUDE", -2.875, -45.125, 169),
 date_trunc('month', s."TIME" AT TIME ZONE 'UTC'),

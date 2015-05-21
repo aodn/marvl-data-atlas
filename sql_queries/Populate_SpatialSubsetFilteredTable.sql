@@ -62,4 +62,7 @@ OR d."DEPTH_QC" IN ('0', '1', '2')
 AND d."TIME" BETWEEN '1995-01-01' AND now() -- impossible time QC test
 AND d."LONGITUDE" BETWEEN 111 AND 155 -- impossible location QC test
 AND d."LATITUDE" BETWEEN -45 AND -3
-AND d."DEPTH" BETWEEN -5 AND 500;
+AND (
+d."DEPTH" BETWEEN -5 AND 505
+OR d."NOMINAL_DEPTH" BETWEEN -5 AND 505
+);
