@@ -1,5 +1,6 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
+DROP VIEW IF EXISTS marvl3_data;
 DROP TABLE IF EXISTS spatial_subset_filtered;
 CREATE TABLE spatial_subset_filtered (
 	measurement_id integer,
