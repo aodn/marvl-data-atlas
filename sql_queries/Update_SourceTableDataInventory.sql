@@ -4,7 +4,7 @@ SET SEARCH_PATH = marvl3, public;
 
 WITH a AS (SELECT 
 m.collection_id,
-count(distinct m.origin_id) AS n_deployments,
+count(distinct m.feature_instance_id) AS n_deployments,
 count(*) AS n_measurements
 FROM marvl3.spatial_subset_filtered m 
 GROUP BY m.collection_id)
