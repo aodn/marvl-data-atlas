@@ -15,4 +15,4 @@ FROM spatial_subset_filtered s
 INNER JOIN bathy_atlas b
 ON round(s."LONGITUDE"::numeric*4)/4 = b."LONGITUDE"
 AND round(s."LATITUDE"::numeric*4)/4 = b."LATITUDE"
-WHERE s."DEPTH" > b."DEPTH");
+WHERE s."DEPTH" > b."DEPTH" + 10); -- we allow 10m margin

@@ -15,4 +15,4 @@ FROM data_atlas s
 INNER JOIN bathy_atlas b
 ON s."LONGITUDE" = b."LONGITUDE"
 AND s."LATITUDE" = b."LATITUDE"
-WHERE s."DEPTH" > b."DEPTH");
+WHERE s."DEPTH" > b."DEPTH" + 10); -- we allow 10m margin
