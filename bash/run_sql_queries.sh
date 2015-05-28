@@ -65,6 +65,9 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_aodn_aims_ctd.s
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_auv.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetTable_final.sql"
 
+# Update the FIELDS_bin in spatial_subset
+SQL_FILES="$SQL_FILES ../sql_queries/Update_SpatialSubsetTable_FIELDS_bin.sql"
+
 # create and populate the table bathy_ga
 SQL_FILES="$SQL_FILES ../sql_queries/Create_BathyGATable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_BathyGATable.sql"
