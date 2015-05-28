@@ -45,7 +45,8 @@ DELETE from marvl3.spatial_subset m
 WHERE m.pkid IN (
 SELECT trajectory_id 
 FROM soop_sst.soop_sst_nrt_trajectory_data d 
-INNER JOIN marvl3.spatial_subset m on d.trajectory_id::character=m.origin_id
+INNER JOIN marvl3.spatial_subset m 
+ON d.trajectory_id::character = m.origin_id
 WHERE d.vessel_name IN ('L''Astrolabe') 
-AND d."TIME" <'2013-04-15- 00:00:00'
-) ;-- Astrolabe SOOP-SST-NRT data processed in DM product only up to Apr 2013.Keep NRT data after this date.
+AND d."TIME" < '2013-04-15'
+); -- Astrolabe SOOP-SST-NRT data processed in DM product only up to Apr 2013. Keep NRT data after this date.
