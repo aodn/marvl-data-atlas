@@ -2,16 +2,16 @@
 
 DROP TABLE IF EXISTS data_atlas;
 CREATE TABLE data_atlas (
-	"LONGITUDE" double precision,
+	"LONGITUDE_bin" double precision,
 	"LONGITUDE_bound_min" double precision,
 	"LONGITUDE_bound_max" double precision,
-	"LATITUDE" double precision,
+	"LATITUDE_bin" double precision,
 	"LATITUDE_bound_min" double precision,
 	"LATITUDE_bound_max" double precision,
-	"TIME" timestamp with time zone,
+	"TIME_bin" timestamp with time zone,
 	"TIME_bound_min" timestamp with time zone,
 	"TIME_bound_max" timestamp with time zone,
-	"DEPTH" real,
+	"DEPTH_bin" real,
 	"DEPTH_bound_min" real,
 	"DEPTH_bound_max" real,
 	"TEMP_n" real,
@@ -34,13 +34,13 @@ CREATE TABLE data_atlas (
 	"VCUR_max" real,
 	"VCUR_mean" real,
 	"VCUR_stddev" real,
-	geom geometry(Geometry,4326)
+	geom_bin geometry(Geometry,4326)
 );
 
 ALTER TABLE data_atlas 
 ADD CONSTRAINT data_atlas_pk PRIMARY KEY ("LONGITUDE", "LATITUDE", "TIME", "DEPTH");
 
 ALTER TABLE data_atlas
-ADD CONSTRAINT data_atlas_geom_check CHECK (st_isvalid(geom));
+ADD CONSTRAINT data_atlas_geom_check CHECK (st_isvalid(geom_bin));
 
-CREATE INDEX data_atlas_gist_idx ON data_atlas USING gist (geom);
+CREATE INDEX data_atlas_gist_idx ON data_atlas USING gist (geom_bin);

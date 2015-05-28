@@ -11,20 +11,25 @@ collection_id,
 "SUBFACILITY",
 "PRODUCT",
 "LONGITUDE",
+"LONGITUDE_bin",
 "LONGITUDE_QC",
 "LATITUDE",
+"LATITUDE_bin",
 "LATITUDE_QC",
 "TIME",
+"TIME_bin",
 "TIME_QC",
 "NOMINAL_DEPTH",
 "NOMINAL_DEPTH_QC",
 "DEPTH",
+"DEPTH_bin",
 "DEPTH_QC",
 "TEMP",
 "TEMP_QC",
 "PSAL",
 "PSAL_QC",
-geom
+geom,
+geom_bin
 )
 SELECT 
 d.pkid,
@@ -35,20 +40,25 @@ s."FACILITY",
 s."SUBFACILITY",
 s."PRODUCT",
 d."LONGITUDE",
+d."LONGITUDE_bin",
 d."LONGITUDE_QC",
 d."LATITUDE",
+d."LATITUDE_bin",
 d."LATITUDE_QC",
 d."TIME" AT TIME ZONE 'UTC',
+d."TIME_bin" AT TIME ZONE 'UTC',
 d."TIME_QC",
 d."NOMINAL_DEPTH",
 d."NOMINAL_DEPTH_QC",
 d."DEPTH",
+d."DEPTH_bin",
 d."DEPTH_QC",
 CASE WHEN d."TEMP_QC" IN ('0', '1', '2') AND d."TEMP" BETWEEN -2.5 AND 40 THEN d."TEMP" ELSE NULL END, -- measurements with QC flags no good are not considered, global range QC test (ARGO thresholds)
 CASE WHEN d."TEMP_QC" IN ('0', '1', '2') AND d."TEMP" BETWEEN -2.5 AND 40 THEN d."TEMP_QC" ELSE NULL END, -- global range QC test (ARGO thresholds)
 CASE WHEN (d."PSAL_QC" IN ('0', '1', '2') AND d."PSAL" BETWEEN 2 AND 41 AND d."TEMP_QC" IN ('0', '1', '2')) THEN d."PSAL" ELSE NULL END, -- checking for TEMP_QC is part of the salinity QC test (if TEMP is not good then PSAL must be not good), global range QC test (ARGO thresholds)
 CASE WHEN (d."PSAL_QC" IN ('0', '1', '2') AND d."PSAL" BETWEEN 2 AND 41 AND d."TEMP_QC" IN ('0', '1', '2')) THEN d."PSAL_QC" ELSE NULL END, -- global range QC test (ARGO thresholds)
-d.geom
+d.geom,
+d.geom_bin
 FROM spatial_subset d
 INNER JOIN marvl3.source s 
 ON s.source_id = d.source_id

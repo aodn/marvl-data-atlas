@@ -9,20 +9,25 @@ SELECT measurement_id,
 	"SUBFACILITY",
 	"PRODUCT",
 	"LONGITUDE",
+	"LONGITUDE_bin",
 	"LONGITUDE_QC",
 	"LATITUDE",
+	"LATITUDE_bin",
 	"LATITUDE_QC",
 	"TIME" AT TIME ZONE 'UTC' AS "TIME",
+	"TIME_bin" AT TIME ZONE 'UTC' AS "TIME",
 	"TIME_QC",
 	"NOMINAL_DEPTH",
 	"NOMINAL_DEPTH_QC",
 	"DEPTH",
+	"DEPTH_bin",
 	"DEPTH_QC",
 	"TEMP",
 	"TEMP_QC",
 	"PSAL",
 	"PSAL_QC",
-	geom
+	geom,
+	geom_bin
 	FROM spatial_subset_filtered
 	ORDER BY feature_instance_id, "TIME", "NOMINAL_DEPTH", "DEPTH", "LATITUDE", "LONGITUDE"
 );
