@@ -1,4 +1,4 @@
- SET SEARCH_PATH = marvl3, public;               
+ SET SEARCH_PATH = marvl3, public;
 -- WODB SUR
 \echo 'WODB SUR'
 INSERT INTO spatial_subset(

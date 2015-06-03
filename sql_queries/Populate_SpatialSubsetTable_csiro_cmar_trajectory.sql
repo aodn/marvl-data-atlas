@@ -1,6 +1,6 @@
 SET SEARCH_PATH = marvl3, public;
 -- CSIRO TRAJECTORY
-\echo 'CSIRO TRAJECTORY'				
+\echo 'CSIRO TRAJECTORY'
 INSERT INTO spatial_subset(
 source_id,
 origin_id,
@@ -27,7 +27,7 @@ avg(d."LATITUDE"),
 '1',
 date_trunc('minute', d."TIME" AT TIME ZONE 'UTC'),
 '1',
--gsw_z_from_p(avg(d."PRESSURE"), avg(d."LATITUDE")),  -- looks like pressure is  PRES_REL , value close to 0dbar near surface
+-gsw_z_from_p(avg(d."PRESSURE"), avg(d."LATITUDE")),  -- looks like pressure is relative, value close to 0dbar are near the surface
 '1',
 avg(d."TEMPERATURE"),
 CASE

@@ -1,6 +1,6 @@
 SET SEARCH_PATH = marvl3, public;		
----SOOP_ASF_MT	
-\echo 'SOOP_ASF_MT'		
+---SOOP_ASF_MT
+\echo 'SOOP_ASF_MT'
 INSERT INTO spatial_subset(
 source_id,
 origin_id,
@@ -39,5 +39,5 @@ WHERE ST_CONTAINS(p.geom, d.geom)
 AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'soop_asf_mt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
-AND d."TIME" < '2015-01-01'	
-AND d.vessel_name NOT IN ('Southern Surveyor');		--SouthernS excluded from here as data from this vessel will be extracted from CSIRO_underway
+AND d."TIME" < '2015-01-01'
+AND d.vessel_name NOT IN ('Southern Surveyor'); --SouthernS excluded from here as data from this vessel will be extracted from CSIRO_underway

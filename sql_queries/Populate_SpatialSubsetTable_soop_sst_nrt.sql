@@ -39,7 +39,7 @@ AND ST_CONTAINS(pp.geom, d.geom) = FALSE
 AND s.table_name = 'soop_sst_nrt_trajectory_data'
 AND d."TIME" >= '1995-01-01' 
 AND d."TIME" < '2015-01-01'
-AND vessel_name NOT IN('Xutra Bhum','Wana Bhum','RV Cape Ferguson');	--'Xutra Bhum', 'Wana Bhum' inSOOP-SST DM; 'RV Cape Ferguson' in SOOP-TRV
+AND vessel_name NOT IN('Xutra Bhum','Wana Bhum','RV Cape Ferguson');	--'Xutra Bhum', 'Wana Bhum' in SOOP-SST DM; 'RV Cape Ferguson' in SOOP-TRV
 
 DELETE from marvl3.spatial_subset m 
 WHERE m.pkid IN (
