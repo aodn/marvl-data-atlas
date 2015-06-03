@@ -17,7 +17,7 @@ CREATE TABLE source (
 
 INSERT INTO source (SELECT 'IMOS/AODN', 'AATAMS', 'SATTAG', 'DM', 'trajectoryProfile', 'aatams_sattag_dm', 'aatams_sattag_dm_profile_data','profile_id','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ACORN', '', '', 'gridded','','','','');
-INSERT INTO source (SELECT 'IMOS/AODN', 'AIMS', 'CTD', '', 'profile', 'aodn_aims_ctd', 'aodn_aims_ctd_data', 'Station','');
+INSERT INTO source (SELECT 'IMOS/AODN', 'AIMS', 'CTD', '', 'profile', 'aodn_aims_ctd', 'aodn_aims_ctd_data', '"Station"','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANFOG', '', 'DM', 'trajectory','anfog_dm','anfog_dm_trajectory_data','file_id','1-min average, 5m bin');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'CTD', 'NRS', 'profile','anmn_nrs_ctd_profiles','anmn_nrs_ctd_profiles_data','cruise_id','');
 INSERT INTO source (SELECT 'IMOS/AODN', 'ANMN', 'Acidification', 'DM', 'timeSeries','anmn_am_dm','anmn_am_dm_data','file_id','1-hour average');
@@ -58,7 +58,7 @@ INSERT INTO source (SELECT 'WODB', '', 'GLD', '', 'trajectory','wodb','','','');
 INSERT INTO source (SELECT 'WODB', '', 'MBT', '', 'profile','wodb','','','');
 INSERT INTO source (SELECT 'WODB', '', 'OSD', '', 'profile','wodb','','','');
 INSERT INTO source (SELECT 'WODB', '', 'PFL', '', 'trajectoryProfile','wodb','','','');
-INSERT INTO source (SELECT 'WODB', '', 'SUR', '', 'trajectory','wodb','','','');
+INSERT INTO source (SELECT 'WODB', '', 'SUR', '', 'trajectory','wodb','sur_measurements','cast_id','');
 INSERT INTO source (SELECT 'WODB', '', 'UOR', '', 'trajectory','wodb','uor_measurements','cast_id','');
 INSERT INTO source (SELECT 'WODB', '', 'XBT', '', 'profile','wodb','xbt_measurements','cast_id','');
 
