@@ -37,8 +37,8 @@ CREATE TABLE data_atlas (
 	geom_bin geometry(Geometry,4326)
 );
 
-ALTER TABLE data_atlas 
-ADD CONSTRAINT data_atlas_pk PRIMARY KEY ("LONGITUDE", "LATITUDE", "TIME", "DEPTH");
+ALTER TABLE data_atlas
+ADD CONSTRAINT data_atlas_pk PRIMARY KEY ("LONGITUDE_bin", "LATITUDE_bin", "TIME_bin", "DEPTH_bin");
 
 ALTER TABLE data_atlas
 ADD CONSTRAINT data_atlas_geom_check CHECK (st_isvalid(geom_bin));
