@@ -84,8 +84,9 @@ SQL_FILES="$SQL_FILES ../sql_queries/Populate_DataAtlasTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Create_SpatialSubsetFilteredTable.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Populate_SpatialSubsetFilteredTable.sql"
 
-# create and populate the view marvl3_data and add indexes
-SQL_FILES="$SQL_FILES ../sql_queries/Create_MarvlDataView.sql"
+# create and populate the marvl3 views and add indexes
+SQL_FILES="$SQL_FILES ../sql_queries/Create_MarvlRawDataView.sql"
+SQL_FILES="$SQL_FILES ../sql_queries/Create_MarvlAtlasDataView.sql"
 SQL_FILES="$SQL_FILES ../sql_queries/Create_Indexes.sql"
 
 # delete rows in the table data_atlas and spatial_subset_filtered that are deeper than the seafloor
