@@ -1,7 +1,7 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
-DROP VIEW IF EXISTS marvl3_data;
-CREATE VIEW marvl3_data AS (
+DROP VIEW IF EXISTS marvl3_raw_data;
+CREATE VIEW marvl3_raw_data AS (
 SELECT measurement_id,
 	feature_instance_id,
 	"ORGANISATION",
@@ -14,8 +14,8 @@ SELECT measurement_id,
 	"LATITUDE",
 	"LATITUDE_bin",
 	"LATITUDE_QC",
-	"TIME",
-	"TIME_bin",
+	"TIME" AT TIME ZONE 'UTC' AS "TIME",
+	"TIME_bin" AT TIME ZONE 'UTC' AS "TIME_bin",
 	"TIME_QC",
 	"NOMINAL_DEPTH",
 	"NOMINAL_DEPTH_QC",
