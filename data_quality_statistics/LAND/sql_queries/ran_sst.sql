@@ -1,6 +1,6 @@
 ﻿SET SEARCH_PATH = marvl3, public;
 
--- RAN SST
+-- RAN SST. WARNING :RAN SST schema has been renamed to MHL SST. Edit query accordingly
 
 SELECT
 s.source_id,
