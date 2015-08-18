@@ -1,5 +1,5 @@
 ﻿SET SEARCH_PATH = marvl3, public;
-
+-- WARNING :RAN SST schema has been renamed to MHL SST. Edit query accordingly 
 DROP TABLE IF EXISTS source;
 CREATE TABLE source (
 	"ORGANISATION" text,
