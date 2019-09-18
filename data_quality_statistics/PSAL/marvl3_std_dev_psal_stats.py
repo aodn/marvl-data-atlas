@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -14,13 +14,14 @@ import datetime
 import numpy as np
 import os
 import calendar
+from six.moves import map
 
 # create a postgresql connection, need .pgpass file in $HOME (not checked)
 def connect(db_dbname,db_user,db_host):
     try:
         conn = psycopg2.connect("dbname="+ db_dbname+ " user=" + db_user +" host=" + db_host)
     except:
-        print "unable to connect to the database"
+        print("unable to connect to the database")
 
     cur = conn.cursor()
     return cur
@@ -176,7 +177,7 @@ def save_to_file_source_data(colnames,rows_original_data,folder_path,schema_name
     f.close()
 
     # append data
-    f_handle = file(filepath, 'a')
+    f_handle = open(filepath, 'a')
     np.savetxt(f_handle, rows_original_data, delimiter=",", fmt='%s')
     f_handle.close()
 
@@ -191,7 +192,7 @@ def save_sql_query_psal_csv(folder_path,psal_stddev):
     f.close()
 
     # save data
-    f_handle = file(folder_path + os.path.sep + 'rows.csv', 'a')
+    f_handle = open(folder_path + os.path.sep + 'rows.csv', 'a')
     np.savetxt(f_handle, psal_stddev,delimiter=",", fmt='%s')
     f_handle.close()
 
@@ -203,7 +204,7 @@ def main():
 
     i_row = 0
     for row in psal_stddev_4:
-        print 'process row ' + str(i_row)
+        print("process row " + str(i_row))
         lon_bin       = row[0]
         lat_bin       = row[1]
         time_bin      = row[2]
