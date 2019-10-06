@@ -12,14 +12,14 @@ buildscript {
     }
 }
 
-//liquibase {
-//    activities {
-//        migration {
-//            changeLogFile changeLogFile
-//            url jdbcUrl
-//            defaultSchemaName defaultSchemaName
-//            username dbUsername
-//            password dbPassword
-//        }
-//    }
-//}
+liquibase {
+    activities {
+        migration {
+            changeLogFile changeLogFile
+            url jdbcUrl
+            defaultSchemaName defaultSchemaName
+            username dbUsername
+            password dbPassword
+        }
+    }
+}
