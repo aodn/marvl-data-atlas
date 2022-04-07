@@ -1,8 +1,10 @@
 # Outline
 \<something about what the Marvl Data Atlas is goes here\>
 
-# Development
+## Licensing
+This project is licensed under the terms of the GNU GPLv3 license.
 
+# Development
 ## Environment Initialisation
 
 For development, we use:
